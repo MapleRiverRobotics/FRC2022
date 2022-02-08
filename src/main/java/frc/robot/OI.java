@@ -7,6 +7,8 @@ package frc.robot;
 import edu.wpi.first.wpilibj.Joystick;
 import edu.wpi.first.wpilibj2.command.button.JoystickButton;
 import frc.robot.commands.Drive;
+import frc.robot.commands.Shoot;
+import frc.robot.subsystems.Shooter;
 
 /**
  * Add your docs here.
@@ -14,7 +16,7 @@ import frc.robot.commands.Drive;
 public class OI {
 
     public Joystick joystickDrive = new Joystick(0);
-    // public JoystickButton shooterForwardButton;
+    public JoystickButton shooterShootButton;
     // public JoystickButton indexingBeltsForwardButton;
     // public JoystickButton liftingBeltsUpButton;
     // public JoystickButton liftingBeltsDownButton;
@@ -41,8 +43,8 @@ public class OI {
 
     public OI() {
         if (joystickDrive != null) {
-            // // shooterForwardButton = new JoystickButton(joystickDrive, 1);
-            // // shooterForwardButton.whileHeld(new ShooterForward());
+            shooterShootButton = new JoystickButton(joystickDrive, 1);
+            shooterShootButton.whileHeld(new Shoot(RobotContainer.getInstance().getShooter()));
             // shooter100Button = new JoystickButton(joystickDrive, 12);
             // shooter100Button.whileHeld(new ShooterSpeedCommand(4500));
             // shooter95Button = new JoystickButton(joystickDrive, 11);
