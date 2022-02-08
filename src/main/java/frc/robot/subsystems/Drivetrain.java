@@ -18,8 +18,6 @@ import edu.wpi.first.wpilibj2.command.SubsystemBase;
 import com.revrobotics.CANSparkMax;
 import com.revrobotics.CANSparkMaxLowLevel.MotorType;
 
-
-
 /**
  *
  */
@@ -30,7 +28,6 @@ public class Drivetrain extends SubsystemBase {
     private CANSparkMax rightSlave;
     private CANSparkMax rightMaster;
     private final DifferentialDrive differentialDrive;
-
 
     /**
     *

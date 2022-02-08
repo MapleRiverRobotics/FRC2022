@@ -19,19 +19,21 @@ public class Shoot extends CommandBase {
 
   // Called when the command is initially scheduled.
   @Override
-  public void initialize() {}
+  public void initialize() {
+  }
 
   // Called every time the scheduler runs while the command is scheduled.
   @Override
   public void execute() {
-    
+
     m_shooter.Start(100);
   }
 
   // Called once the command ends or is interrupted.
   @Override
   public void end(boolean interrupted) {
-    m_shooter.Stop();;
+    m_shooter.Stop();
+    ;
   }
 
   // Returns true when the command should end.

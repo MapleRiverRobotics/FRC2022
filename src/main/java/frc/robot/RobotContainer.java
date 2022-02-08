@@ -44,12 +44,11 @@ public class RobotContainer {
   private final Shooter m_shooter = new Shooter();
 
   public Shooter getShooter() {
-      return m_shooter;
+    return m_shooter;
   };
 
   // Joysticks
   private final Joystick driveJoystick = new Joystick(0);
-
 
   // A chooser for autonomous commands
   SendableChooser<Command> m_chooser = new SendableChooser<>();
@@ -66,13 +65,11 @@ public class RobotContainer {
     SmartDashboard.putData("Autonomous Command", new AutonomousCommand());
     SmartDashboard.putData("Drive", new Drive(m_drivetrain));
 
-
     // Configure the button bindings
     configureButtonBindings();
 
     // Configure default commands
     m_drivetrain.setDefaultCommand(new Drive(m_drivetrain));
-
 
     // Configure autonomous sendable chooser
     m_chooser.setDefaultOption("Autonomous Command", new AutonomousCommand());

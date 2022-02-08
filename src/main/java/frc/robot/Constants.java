@@ -34,11 +34,11 @@ public final class Constants {
 
     }
 
-        // Shooter constants
-        public static final class ShooterConstants {
-            public static final int ShooterMotorOneId = 6;
-            public static final int ShooterMotorTwoId = 5;
-        }
+    // Shooter constants
+    public static final class ShooterConstants {
+        public static final int ShooterMotorOneId = 6;
+        public static final int ShooterMotorTwoId = 5;
+    }
 
     // Operator Interface Constants
     public static final class OIConstants {
