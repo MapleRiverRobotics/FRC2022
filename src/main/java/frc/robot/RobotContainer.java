@@ -12,6 +12,7 @@
 
 package frc.robot;
 
+import frc.robot.Constants.OIConstants;
 import frc.robot.commands.*;
 import frc.robot.subsystems.*;
 import edu.wpi.first.wpilibj.smartdashboard.SendableChooser;
@@ -48,7 +49,7 @@ public class RobotContainer {
   };
 
   // Joysticks
-  private final Joystick driveJoystick = new Joystick(0);
+  private final Joystick driveJoystick = new Joystick(OIConstants.DriverJoystickId);
 
   // A chooser for autonomous commands
   SendableChooser<Command> m_chooser = new SendableChooser<>();
