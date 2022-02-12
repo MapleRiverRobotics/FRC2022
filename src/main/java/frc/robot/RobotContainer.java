@@ -43,6 +43,7 @@ public class RobotContainer {
   public static OI oi = new OI();
   private final Drivetrain m_drivetrain = new Drivetrain();
   private final Shooter m_shooter = new Shooter();
+  private final Climber m_climber = new Climber();
 
   public Shooter getShooter() {
     return m_shooter;
@@ -50,6 +51,7 @@ public class RobotContainer {
 
   // Joysticks
   private final Joystick driveJoystick = new Joystick(OIConstants.DriverJoystickId);
+  private final Joystick operatorJoystick = new Joystick(OIConstants.OperatorJoystickId);
 
   // A chooser for autonomous commands
   SendableChooser<Command> m_chooser = new SendableChooser<>();
@@ -95,6 +97,12 @@ public class RobotContainer {
     final JoystickButton shooterShootButton = new JoystickButton(driveJoystick, 1);
     shooterShootButton.whileHeld(new Shoot(m_shooter));
 
+    final JoystickButton grab1Button = new JoystickButton(operatorJoystick, 3);
+    grab1Button.whileHeld(new Grab(m_climber));
+    final JoystickButton grab2Button = new JoystickButton(operatorJoystick, 4);
+    grab2Button.whileHeld(new Grab(m_climber));
+    final JoystickButton grab3Button = new JoystickButton(operatorJoystick, 2);
+    grab3Button.whileHeld(new Grab(m_climber));
   }
 
   public Joystick getDriveJoystick() {
