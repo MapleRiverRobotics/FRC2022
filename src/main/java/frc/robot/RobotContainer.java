@@ -22,6 +22,7 @@ import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.InstantCommand;
 import edu.wpi.first.wpilibj.Joystick;
+import edu.wpi.first.wpilibj.XboxController;
 import edu.wpi.first.wpilibj2.command.button.JoystickButton;
 import frc.robot.subsystems.*;
 
@@ -51,7 +52,7 @@ public class RobotContainer {
 
   // Joysticks
   private final Joystick driveJoystick = new Joystick(OIConstants.DriverJoystickId);
-  private final Joystick operatorJoystick = new Joystick(OIConstants.OperatorJoystickId);
+  private final XboxController operatorJoystick = new XboxController(OIConstants.OperatorJoystickId);
 
   // A chooser for autonomous commands
   SendableChooser<Command> m_chooser = new SendableChooser<>();
@@ -94,15 +95,25 @@ public class RobotContainer {
    */
   private void configureButtonBindings() {
     // Create some buttons
-    final JoystickButton shooterShootButton = new JoystickButton(driveJoystick, 1);
-    shooterShootButton.whileHeld(new Shoot(m_shooter));
+    // final JoystickButton shooterShootButton = new JoystickButton(driveJoystick, 1);
+    // shooterShootButton.whileHeld(new Shoot(m_shooter));
 
+
+    final JoystickButton releaseButton = new JoystickButton(operatorJoystick, 9);
     final JoystickButton grab1Button = new JoystickButton(operatorJoystick, 3);
-    grab1Button.whileHeld(new Grab(m_climber));
     final JoystickButton grab2Button = new JoystickButton(operatorJoystick, 4);
-    grab2Button.whileHeld(new Grab(m_climber));
     final JoystickButton grab3Button = new JoystickButton(operatorJoystick, 2);
-    grab3Button.whileHeld(new Grab(m_climber));
+
+    //Grab
+    releaseButton.negate().and(grab1Button).whileActiveOnce(new Grab(m_climber, 1));
+    releaseButton.negate().and(grab2Button).whileActiveOnce(new Grab(m_climber, 2));
+    releaseButton.negate().and(grab3Button).whileActiveOnce(new Grab(m_climber, 3));
+
+    // Release
+    releaseButton.and(grab1Button).whileActiveOnce(new Release(m_climber, 1));
+    releaseButton.and(grab2Button).whileActiveOnce(new Release(m_climber, 2));
+    releaseButton.and(grab3Button).whileActiveOnce(new Release(m_climber, 3));
+
   }
 
   public Joystick getDriveJoystick() {

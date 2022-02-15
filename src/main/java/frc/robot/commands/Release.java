@@ -11,20 +11,14 @@ public class Release extends CommandBase {
   /** Creates a new ShooterShoot. */
 
   private final Climber m_climber;
+  private final int m_barNumber;
 
-  public Release(Climber subsystem) {
+  public Release(Climber subsystem, int barnumber) {
 
     m_climber = subsystem;
+    m_barNumber = barnumber;
     addRequirements(m_climber);
 
-  }
-
-  public void ReleaseBar(int barnumber) {
-    if (barnumber == 1 || barnumber == 3) {
-      m_climber.MediumTraverseRelease();
-    } else if (barnumber == 2) {
-      m_climber.HighRelease();
-    }
   }
 
   // Called when the command is initially scheduled.
@@ -35,7 +29,14 @@ public class Release extends CommandBase {
   // Called every time the scheduler runs while the command is scheduled.
   @Override
   public void execute() {
-    ReleaseBar(1);
+    if (m_barNumber == 1 || m_barNumber == 3) {
+      m_climber.MediumTraverseRelease();
+    } else if (m_barNumber == 2) {
+      m_climber.HighRelease();
+    }
+
+    // this is just a test of a servo
+    m_climber.DisengageBrake();
   }
 
   // Called once the command ends or is interrupted.

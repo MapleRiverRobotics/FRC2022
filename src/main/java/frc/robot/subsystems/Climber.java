@@ -9,6 +9,7 @@ import com.revrobotics.CANSparkMaxLowLevel.MotorType;
 
 import edu.wpi.first.wpilibj.DoubleSolenoid;
 import edu.wpi.first.wpilibj.PneumaticsModuleType;
+import edu.wpi.first.wpilibj.Servo;
 import edu.wpi.first.wpilibj.DoubleSolenoid.Value;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
 import frc.robot.Constants.ClimberConstants;
@@ -19,6 +20,19 @@ public class Climber extends SubsystemBase {
 
   DoubleSolenoid mediumTraverseValve = new DoubleSolenoid(PneumaticsModuleType.CTREPCM, ClimberConstants.MediumTraverseGrabId, ClimberConstants.MediumTraverseReleaseId);
   DoubleSolenoid highValve = new DoubleSolenoid(PneumaticsModuleType.CTREPCM, ClimberConstants.HighValveGrabId, ClimberConstants.HighValveReleaseId);
+  Servo brakeServo = new Servo(1);
+
+  public Climber() {
+
+  }
+
+  public void EngageBrake() {
+    brakeServo.setAngle(180);
+  }
+
+  public void DisengageBrake() {
+    brakeServo.setAngle(0);
+  }
 
   public void MediumTraverseRelease() {
     mediumTraverseValve.set(Value.kReverse);
@@ -34,10 +48,6 @@ public class Climber extends SubsystemBase {
 
   public void HighGrab() {
     highValve.set(Value.kForward);
-  }
-
-  public Climber() {
-
   }
 
   @Override

@@ -11,20 +11,13 @@ public class Grab extends CommandBase {
   /** Creates a new ShooterShoot. */
 
   private final Climber m_climber;
+  private final int m_barNumber;
 
-  public Grab(Climber subsystem) {
+  public Grab(Climber subsystem, int barnumber) {
 
     m_climber = subsystem;
+    m_barNumber = barnumber;
     addRequirements(m_climber);
-
-  }
-
-  public void GrabBar(int barnumber) {
-    if (barnumber == 1 || barnumber == 3) {
-      m_climber.MediumTraverseGrab();
-    } else if (barnumber == 2) {
-      m_climber.HighGrab();
-    } 
 
   }
 
@@ -36,7 +29,14 @@ public class Grab extends CommandBase {
   // Called every time the scheduler runs while the command is scheduled.
   @Override
   public void execute() {
-    GrabBar(1);
+    if (m_barNumber == 1 || m_barNumber == 3) {
+      m_climber.MediumTraverseGrab();
+    } else if (m_barNumber == 2) {
+      m_climber.HighGrab();
+    }
+
+    // this is just a test of a servo
+    m_climber.EngageBrake();
   }
 
   // Called once the command ends or is interrupted.
