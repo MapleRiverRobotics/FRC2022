@@ -45,11 +45,26 @@ public final class Constants {
         public static final int DriverJoystickId = 1;
         public static final int OperatorJoystickId = 0;
     }
+
     // Climber Constants
     public static final class ClimberConstants {
         public static final int HighValveGrabId = 0;
-        public static final int HighValveReleaseId = 1;       
+        public static final int HighValveReleaseId = 1;
         public static final int MediumTraverseGrabId = 2;
         public static final int MediumTraverseReleaseId = 3;
+        public static final int ClimberMotorOneId = 7;
+        public static final int ClimberMotorTwoId = 8;
+        public static final int BreakServoOneId = 0;
+        public static final int BreakServoTwoId = 1;
+    }
+
+    // Intake constants
+    public static final class IntakeConstants {
+        public static final int IntakeMotorOneId = 9;
+    }
+
+    // Indexer constants
+    public static final class IndexerConstants {
+        public static final int IndexerMotorOneId = 10;
     }
 }
