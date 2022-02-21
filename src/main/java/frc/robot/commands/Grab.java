@@ -5,6 +5,7 @@
 package frc.robot.commands;
 
 import edu.wpi.first.wpilibj2.command.CommandBase;
+import frc.robot.Constants.ClimberConstants;
 import frc.robot.subsystems.Climber;
 
 public class Grab extends CommandBase {
@@ -29,10 +30,17 @@ public class Grab extends CommandBase {
   // Called every time the scheduler runs while the command is scheduled.
   @Override
   public void execute() {
-    if (m_barNumber == 1 || m_barNumber == 3) {
-      m_climber.MediumTraverseGrab();
-    } else if (m_barNumber == 2) {
-      m_climber.HighGrab();
+    switch (m_barNumber) {
+      case 1:
+        m_climber.MediumTraverseGrab();
+        break;
+      case 2:
+        m_climber.HighGrab();
+        break;
+      case 3:
+        m_climber.MediumTraverseGrab();
+        break;
+
     }
 
     // this is just a test of a servo

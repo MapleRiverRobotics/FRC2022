@@ -5,15 +5,24 @@
 package frc.robot.commands;
 
 import edu.wpi.first.wpilibj2.command.CommandBase;
-import frc.robot.subsystems.Shooter;
+import frc.robot.Constants.ClimberConstants;
+import frc.robot.Constants.ClimberConstants.Arm;
+import frc.robot.subsystems.Climber;
+
 
 public class Rotate extends CommandBase {
-  /** Creates a new ShooterShoot. */
+
+  private final Climber m_climber;
+  private final int m_direction;
+  private final Arm m_arm;
  
 
-  public Rotate() {
+  public Rotate(Climber climber, Arm arm, int direction ) {
     // Use addRequirements() here to declare subsystem dependencies.
-  ;
+    m_climber = climber;
+    m_direction = direction;
+    m_arm = arm;
+    addRequirements(m_climber);
   }
 
   // Called when the command is initially scheduled.
@@ -24,14 +33,14 @@ public class Rotate extends CommandBase {
   // Called every time the scheduler runs while the command is scheduled.
   @Override
   public void execute() {
-
-  
+    //m_climber.SetArmAngle(360 * m_direction, m_arm);
+    m_climber.Start(m_direction, m_arm);
   }
 
   // Called once the command ends or is interrupted.
   @Override
   public void end(boolean interrupted) {
-    ;
+    m_climber.Stop(m_arm);
   }
 
   // Returns true when the command should end.

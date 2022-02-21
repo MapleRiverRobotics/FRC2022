@@ -56,6 +56,12 @@ public final class Constants {
         public static final int ClimberMotorTwoId = 8;
         public static final int BreakServoOneId = 0;
         public static final int BreakServoTwoId = 1;
+
+        public enum Arm {
+            Left,
+            Right,
+            Both
+        }
     }
 
     // Intake constants

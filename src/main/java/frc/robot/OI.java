@@ -6,6 +6,7 @@ package frc.robot;
 
 import edu.wpi.first.wpilibj.Joystick;
 import edu.wpi.first.wpilibj2.command.button.JoystickButton;
+import frc.robot.Constants.OIConstants;
 import frc.robot.commands.Drive;
 import frc.robot.commands.Shoot;
 import frc.robot.subsystems.Shooter;
@@ -15,7 +16,7 @@ import frc.robot.subsystems.Shooter;
  */
 public class OI {
 
-    public Joystick joystickDrive = new Joystick(0);
+    public Joystick joystickDrive = new Joystick(OIConstants.DriverJoystickId);
     public JoystickButton shooterShootButton;
     // public JoystickButton indexingBeltsForwardButton;
     // public JoystickButton liftingBeltsUpButton;
@@ -33,7 +34,7 @@ public class OI {
     // public JoystickButton newShooterButton;
     // public JoystickButton intakeIn;
 
-    public Joystick joystickOperator = new Joystick(0);
+    public Joystick joystickOperator = new Joystick(OIConstants.OperatorJoystickId);
     // public JoystickButton intakeInButton;
     // public JoystickButton intakeOutButton;
     // public JoystickButton liftingBeltsUpOperatorButton;
@@ -43,8 +44,8 @@ public class OI {
 
     public OI() {
         if (joystickDrive != null) {
-            shooterShootButton = new JoystickButton(joystickDrive, 1);
-            shooterShootButton.whileHeld(new Shoot(RobotContainer.getInstance().getShooter()));
+            //shooterShootButton = new JoystickButton(joystickDrive, 1);
+            //shooterShootButton.whileHeld(new Shoot(RobotContainer.getInstance().getShooter()));
             // shooter100Button = new JoystickButton(joystickDrive, 12);
             // shooter100Button.whileHeld(new ShooterSpeedCommand(4500));
             // shooter95Button = new JoystickButton(joystickDrive, 11);

@@ -4,6 +4,7 @@
 
 package frc.robot.subsystems;
 
+
 import com.revrobotics.CANSparkMax;
 import com.revrobotics.RelativeEncoder;
 import com.revrobotics.SparkMaxPIDController;
@@ -19,14 +20,13 @@ public class Shooter extends SubsystemBase {
   private CANSparkMax shooterMotorOne;
   private CANSparkMax shooterMotorTwo;
   private SparkMaxPIDController m_pidControllerOne;
-  private SparkMaxPIDController m_pidControllerTwo;
   private RelativeEncoder m_encoderOne;
-  private RelativeEncoder m_encoderTwo;
   public double kP, kI, kD, kIz, kFF, kMaxOutput, kMinOutput, maxRPM;
 
   public Shooter() {
     shooterMotorOne = new CANSparkMax(ShooterConstants.ShooterMotorOneId, MotorType.kBrushless);
     shooterMotorTwo = new CANSparkMax(ShooterConstants.ShooterMotorTwoId, MotorType.kBrushless);
+    shooterMotorTwo.follow(shooterMotorOne);
     /**
      * In order to use PID functionality for a controller, a SparkMaxPIDController
      * object
@@ -34,11 +34,9 @@ public class Shooter extends SubsystemBase {
      * CANSparkMax object
      */
     m_pidControllerOne = shooterMotorOne.getPIDController();
-    m_pidControllerTwo = shooterMotorTwo.getPIDController();
 
     // Encoder object created to display position values
     m_encoderOne = shooterMotorOne.getEncoder();
-    m_encoderTwo = shooterMotorTwo.getEncoder();
 
     // PID coefficients
     kP = 6e-5;
@@ -57,13 +55,6 @@ public class Shooter extends SubsystemBase {
     m_pidControllerOne.setIZone(kIz);
     m_pidControllerOne.setFF(kFF);
     m_pidControllerOne.setOutputRange(kMinOutput, kMaxOutput);
-
-    m_pidControllerTwo.setP(kP);
-    m_pidControllerTwo.setI(kI);
-    m_pidControllerTwo.setD(kD);
-    m_pidControllerTwo.setIZone(kIz);
-    m_pidControllerTwo.setFF(kFF);
-    m_pidControllerTwo.setOutputRange(kMinOutput, kMaxOutput);
 
     // display PID coefficients on SmartDashboard
     SmartDashboard.putNumber("P Gain", kP);
@@ -91,32 +82,26 @@ public class Shooter extends SubsystemBase {
     // controller
     if ((p != kP)) {
       m_pidControllerOne.setP(p);
-      m_pidControllerTwo.setP(p);
       kP = p;
     }
     if ((i != kI)) {
       m_pidControllerOne.setI(i);
-      m_pidControllerTwo.setI(i);
       kI = i;
     }
     if ((d != kD)) {
       m_pidControllerOne.setD(d);
-      m_pidControllerTwo.setD(d);
       kD = d;
     }
     if ((iz != kIz)) {
       m_pidControllerOne.setIZone(iz);
-      m_pidControllerTwo.setIZone(iz);
       kIz = iz;
     }
     if ((ff != kFF)) {
       m_pidControllerOne.setFF(ff);
-      m_pidControllerTwo.setFF(ff);
       kFF = ff;
     }
     if ((max != kMaxOutput) || (min != kMinOutput)) {
       m_pidControllerOne.setOutputRange(min, max);
-      m_pidControllerTwo.setOutputRange(min, max);
       kMinOutput = min;
       kMaxOutput = max;
     }
@@ -137,7 +122,6 @@ public class Shooter extends SubsystemBase {
      */
     double setPoint = maxRPM;
     m_pidControllerOne.setReference(setPoint, CANSparkMax.ControlType.kVelocity);
-    m_pidControllerTwo.setReference(setPoint, CANSparkMax.ControlType.kVelocity);
     
     SmartDashboard.putNumber("SetPoint", setPoint);
     SmartDashboard.putNumber("ProcessVariable", m_encoderOne.getVelocity());
