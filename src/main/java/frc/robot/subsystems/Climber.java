@@ -26,7 +26,7 @@ public class Climber extends SubsystemBase {
   public SparkMaxPIDController PidControllerLeft;
   public SparkMaxPIDController PidControllerRight;
   private RelativeEncoder m_encoderLeft;
-  private RelativeEncoder m_encoderRight;
+  //private RelativeEncoder m_encoderRight;
   public double kP, kI, kD, kIz, kFF, kMaxOutput, kMinOutput;
   private double rotations;
 
@@ -62,7 +62,7 @@ public class Climber extends SubsystemBase {
 
     // Encoder object created to display position values
     m_encoderLeft = m_motorLeft.getEncoder();
-    m_encoderRight = m_motorRight.getEncoder();
+    //m_encoderRight = m_motorRight.getEncoder();
 
     // m_encoderLeft.setPositionConversionFactor(1.0 / gearRatio);
     // m_encoderRight.setPositionConversionFactor(1.0 / gearRatio);

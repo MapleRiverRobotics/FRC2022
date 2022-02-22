@@ -5,15 +5,18 @@
 package frc.robot.commands;
 
 import edu.wpi.first.wpilibj2.command.CommandBase;
-import frc.robot.subsystems.Shooter;
+import frc.robot.subsystems.Intake;
 
 public class IntakeRun extends CommandBase {
-  /** Creates a new ShooterShoot. */
- 
 
-  public IntakeRun() {
-    // Use addRequirements() here to declare subsystem dependencies.
-  ;
+  private final Intake m_intake;
+  private final int m_direction;
+
+  public IntakeRun(Intake intake, int direction) {
+    addRequirements(intake);
+    
+    m_intake = intake;
+    m_direction = direction;
   }
 
   // Called when the command is initially scheduled.
@@ -24,14 +27,13 @@ public class IntakeRun extends CommandBase {
   // Called every time the scheduler runs while the command is scheduled.
   @Override
   public void execute() {
-
-  
+    m_intake.Start(m_direction);
   }
 
   // Called once the command ends or is interrupted.
   @Override
   public void end(boolean interrupted) {
-    ;
+    m_intake.Stop();
   }
 
   // Returns true when the command should end.

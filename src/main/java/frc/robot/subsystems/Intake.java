@@ -8,14 +8,14 @@ import com.revrobotics.CANSparkMax;
 import com.revrobotics.CANSparkMaxLowLevel.MotorType;
 
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
-import frc.robot.Constants.ShooterConstants;
+import frc.robot.Constants.IntakeConstants;
 
 public class Intake extends SubsystemBase {
-  /** Creates a new Shooter. */
 
-
+  private CANSparkMax m_intakeMotor;
 
   public Intake() {
+    m_intakeMotor = new CANSparkMax(IntakeConstants.IntakeMotorOneId, MotorType.kBrushless);
 
   }
 
@@ -24,11 +24,11 @@ public class Intake extends SubsystemBase {
     // This method will be called once per scheduler run
   }
 
-  public void Start(double speed) {
-
+  public void Start(int direction) {
+    m_intakeMotor.set(80 * direction);
   }
 
   public void Stop() {
-
+    m_intakeMotor.set(0);
   }
 }

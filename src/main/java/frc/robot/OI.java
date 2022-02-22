@@ -7,9 +7,7 @@ package frc.robot;
 import edu.wpi.first.wpilibj.Joystick;
 import edu.wpi.first.wpilibj2.command.button.JoystickButton;
 import frc.robot.Constants.OIConstants;
-import frc.robot.commands.Drive;
-import frc.robot.commands.Shoot;
-import frc.robot.subsystems.Shooter;
+
 
 /**
  * Add your docs here.

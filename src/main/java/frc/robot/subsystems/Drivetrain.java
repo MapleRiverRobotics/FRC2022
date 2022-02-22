@@ -13,7 +13,6 @@
 package frc.robot.subsystems;
 
 import frc.robot.Constants.DriveConstants;
-import frc.robot.commands.Drive;
 import edu.wpi.first.wpilibj.drive.DifferentialDrive;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
 import com.revrobotics.CANSparkMax;
@@ -36,18 +35,18 @@ public class Drivetrain extends SubsystemBase {
     public Drivetrain() {
 
         rightMaster = new CANSparkMax(DriveConstants.RightMasterMotorId, MotorType.kBrushless);
-        rightMaster.setInverted(false);
+        rightMaster.setInverted(true);
 
         rightSlave = new CANSparkMax(DriveConstants.RightSlaveMototId, MotorType.kBrushless);
         rightSlave.follow(rightMaster);
-        rightSlave.setInverted(false);
+        rightSlave.setInverted(true);
 
         leftMaster = new CANSparkMax(DriveConstants.LeftMasterMotorId, MotorType.kBrushless);
-        leftMaster.setInverted(true);
+        leftMaster.setInverted(false);
 
         leftSlave = new CANSparkMax(DriveConstants.LeftSlaveMotorId, MotorType.kBrushless);
         leftSlave.follow(leftMaster);
-        leftSlave.setInverted(true);
+        leftSlave.setInverted(false);
 
         differentialDrive = new DifferentialDrive(leftMaster, rightMaster);
 
@@ -66,7 +65,7 @@ public class Drivetrain extends SubsystemBase {
     }
 
     public void arcadeDrive(final double speed, final double rotation) {
-        differentialDrive.arcadeDrive(speed, rotation);
+        differentialDrive.arcadeDrive(speed, -rotation);
     }
 
     public void stop() {
