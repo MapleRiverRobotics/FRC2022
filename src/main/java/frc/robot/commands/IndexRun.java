@@ -5,14 +5,19 @@
 package frc.robot.commands;
 
 import edu.wpi.first.wpilibj2.command.CommandBase;
+import frc.robot.subsystems.Indexer;
 
 public class IndexRun extends CommandBase {
-  /** Creates a new ShooterShoot. */
- 
 
-  public IndexRun() {
-    // Use addRequirements() here to declare subsystem dependencies.
-  ;
+  private Indexer m_indexer;
+  private int m_direction;
+
+  public IndexRun(Indexer indexer, int direction) {
+    addRequirements(indexer);
+    
+    m_indexer = indexer;
+    m_direction = direction;
+  
   }
 
   // Called when the command is initially scheduled.
@@ -23,14 +28,14 @@ public class IndexRun extends CommandBase {
   // Called every time the scheduler runs while the command is scheduled.
   @Override
   public void execute() {
-
-  
+    m_indexer.Start(m_direction);
   }
 
   // Called once the command ends or is interrupted.
   @Override
   public void end(boolean interrupted) {
-    ;
+    m_indexer.Stop();
+    
   }
 
   // Returns true when the command should end.

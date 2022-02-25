@@ -42,8 +42,8 @@ public final class Constants {
 
     // Operator Interface Constants
     public static final class OIConstants {
-        public static final int DriverJoystickId = 1;
-        public static final int OperatorJoystickId = 0;
+        public static final int DriverJoystickId = 0;
+        public static final int OperatorJoystickId = 1;
     }
 
     // Climber Constants
