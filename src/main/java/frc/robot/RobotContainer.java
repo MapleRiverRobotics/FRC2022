@@ -46,6 +46,7 @@ public class RobotContainer {
 //  private final Shooter m_shooter = new Shooter();
   private final Climber m_climber = new Climber();
   private final Intake m_intake = new Intake();
+  private final Indexer m_indexer = new Indexer();
   
   public Drivetrain getDriveTrain() {
     return m_drivetrain;
@@ -107,6 +108,12 @@ public class RobotContainer {
     Trigger intakeReverse = new Trigger(() -> operatorJoystick.getPOV() > 135 && operatorJoystick.getPOV() < 215);
     intakeForward.whileActiveContinuous(new IntakeRun(m_intake, 1));
     intakeReverse.whileActiveContinuous(new IntakeRun(m_intake, -1));
+
+    // Indexer Triggers
+    Trigger indexerForward = new Trigger (() -> operatorJoystick.getPOV() >= 45 && operatorJoystick.getPOV() < 135) ;
+    Trigger indexerReverse = new Trigger(() -> operatorJoystick.getPOV() > 225 && operatorJoystick.getPOV() < 315);
+    indexerForward.whileActiveContinuous(new IndexRun(m_indexer, 1));
+    indexerReverse.whileActiveContinuous(new IndexRun(m_indexer, -1));
 
     // Climber Rotation Triggers
     Trigger leftTrigger = new Trigger(() -> operatorJoystick.getLeftTriggerAxis() > 0);
