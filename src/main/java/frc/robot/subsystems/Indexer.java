@@ -4,12 +4,17 @@
 
 package frc.robot.subsystems;
 
+import com.revrobotics.CANSparkMax;
+import com.revrobotics.CANSparkMaxLowLevel.MotorType;
+
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
+import frc.robot.Constants.IndexerConstants;
 
 public class Indexer extends SubsystemBase {
+  private CANSparkMax m_indexerMotor;
 
   public Indexer() {
-
+    m_indexerMotor = new CANSparkMax(IndexerConstants.IndexerMotorOneId, MotorType.kBrushless);
   }
 
   @Override
@@ -17,11 +22,11 @@ public class Indexer extends SubsystemBase {
     // This method will be called once per scheduler run
   }
 
-  public void Start(double speed) {
-
+  public void Start(int direction) {
+    m_indexerMotor.set(80 * direction);
   }
 
   public void Stop() {
-
+    m_indexerMotor.set(0);
   }
 }
