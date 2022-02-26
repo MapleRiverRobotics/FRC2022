@@ -43,7 +43,7 @@ public class RobotContainer {
   private static RobotContainer m_robotContainer = new RobotContainer();
   public static OI oi = new OI();
   private final Drivetrain m_drivetrain = new Drivetrain();
-//  private final Shooter m_shooter = new Shooter();
+  private final Shooter m_shooter = new Shooter();
   private final Climber m_climber = new Climber();
   private final Intake m_intake = new Intake();
   private final Indexer m_indexer = new Indexer();
@@ -100,14 +100,14 @@ public class RobotContainer {
    */
   private void configureButtonBindings() {
     // Create some buttons
-    // final JoystickButton shooterShootButton = new JoystickButton(driveJoystick, 1);
-    // shooterShootButton.whileHeld(new Shoot(m_shooter));
+    final JoystickButton shooterShootButton = new JoystickButton(driveJoystick, 1);
+    shooterShootButton.whileHeld(new Shoot(m_shooter));
 
     // Intake Triggers
     Trigger intakeForward = new Trigger(() -> operatorJoystick.getPOV() > 315 || (operatorJoystick.getPOV() >= 0 && operatorJoystick.getPOV() < 45) );
     Trigger intakeReverse = new Trigger(() -> operatorJoystick.getPOV() > 135 && operatorJoystick.getPOV() < 215);
-    intakeForward.whileActiveContinuous(new IntakeRun(m_intake, 1));
-    intakeReverse.whileActiveContinuous(new IntakeRun(m_intake, -1));
+    intakeForward.whileActiveContinuous(new IntakeRun(m_intake, -1));
+    intakeReverse.whileActiveContinuous(new IntakeRun(m_intake, 1));
 
     // Indexer Triggers
     Trigger indexerForward = new Trigger (() -> operatorJoystick.getPOV() >= 45 && operatorJoystick.getPOV() < 135) ;

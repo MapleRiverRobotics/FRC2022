@@ -4,17 +4,16 @@
 
 package frc.robot.subsystems;
 
-import com.revrobotics.CANSparkMax;
-import com.revrobotics.CANSparkMaxLowLevel.MotorType;
+import com.ctre.phoenix.motorcontrol.can.WPI_TalonSRX;
 
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
 import frc.robot.Constants.IndexerConstants;
 
 public class Indexer extends SubsystemBase {
-  private CANSparkMax m_indexerMotor;
+  private WPI_TalonSRX m_indexerMotor;
 
   public Indexer() {
-    m_indexerMotor = new CANSparkMax(IndexerConstants.IndexerMotorOneId, MotorType.kBrushless);
+    m_indexerMotor = new WPI_TalonSRX(IndexerConstants.IndexerMotorOneId);
   }
 
   @Override
