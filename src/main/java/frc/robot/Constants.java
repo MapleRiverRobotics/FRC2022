@@ -48,10 +48,10 @@ public final class Constants {
 
     // Climber Constants
     public static final class ClimberConstants {
-        public static final int HighValveGrabId = 0;
-        public static final int HighValveReleaseId = 1;
-        public static final int MediumTraverseGrabId = 2;
-        public static final int MediumTraverseReleaseId = 3;
+        public static final int HighValveGrabId = 2;
+        public static final int HighValveReleaseId = 3;
+        public static final int MediumTraverseGrabId = 4;
+        public static final int MediumTraverseReleaseId = 5;
         public static final int ClimberMotorOneId = 7;
         public static final int ClimberMotorTwoId = 8;
         public static final int BreakServoOneId = 0;
@@ -66,7 +66,11 @@ public final class Constants {
 
     // Intake constants
     public static final class IntakeConstants {
-        public static final int IntakeMotorOneId = 9;
+        public static final int IntakeMotorOneId = 9;        
+        public static final int IntakeDownValve = 0;
+        public static final int IntakeUpValve = 1;
+        public static final int IntakeUpButton = 7;
+        public static final int IntakeDownButton = 8;
     }
 
     // Indexer constants

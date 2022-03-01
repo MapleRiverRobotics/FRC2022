@@ -5,8 +5,12 @@
 package frc.robot.subsystems;
 
 import com.revrobotics.CANSparkMax;
+import com.revrobotics.CANSparkMax.IdleMode;
 import com.revrobotics.CANSparkMaxLowLevel.MotorType;
 
+import edu.wpi.first.wpilibj.DoubleSolenoid;
+import edu.wpi.first.wpilibj.PneumaticsModuleType;
+import edu.wpi.first.wpilibj.DoubleSolenoid.Value;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
 import frc.robot.Constants.IntakeConstants;
 
@@ -14,8 +18,13 @@ public class Intake extends SubsystemBase {
 
   private CANSparkMax m_intakeMotor;
 
+  DoubleSolenoid intakeLift = new DoubleSolenoid(PneumaticsModuleType.CTREPCM,
+      IntakeConstants.IntakeUpValve, IntakeConstants.IntakeDownValve);
+
   public Intake() {
     m_intakeMotor = new CANSparkMax(IntakeConstants.IntakeMotorOneId, MotorType.kBrushless);
+    m_intakeMotor.restoreFactoryDefaults();
+    m_intakeMotor.setIdleMode(IdleMode.kCoast);
 
   }
 
@@ -30,5 +39,13 @@ public class Intake extends SubsystemBase {
 
   public void Stop() {
     m_intakeMotor.set(0);
+  }
+
+  public void up(){
+    intakeLift.set(Value.kReverse);
+  }
+
+  public void down(){
+    intakeLift.set(Value.kForward);
   }
 }

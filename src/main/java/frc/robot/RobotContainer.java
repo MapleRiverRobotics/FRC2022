@@ -100,14 +100,23 @@ public class RobotContainer {
    */
   private void configureButtonBindings() {
     // Create some buttons
-    final JoystickButton shooterShootButton = new JoystickButton(driveJoystick, 1);
-    shooterShootButton.whileHeld(new Shoot(m_shooter));
+    final JoystickButton shooterShootButtonOne = new JoystickButton(driveJoystick, 1);
+    shooterShootButtonOne.whileActiveContinuous(new Shoot(m_shooter, 75));
+    final JoystickButton shooterShootButtonTwo = new JoystickButton(driveJoystick, 12);
+    shooterShootButtonTwo.whileActiveContinuous(new Shoot(m_shooter, 60));
+    final JoystickButton shooterShootButtonThree = new JoystickButton(driveJoystick, 11);
+    shooterShootButtonThree.whileActiveContinuous(new Shoot(m_shooter, 40));
 
     // Intake Triggers
     Trigger intakeForward = new Trigger(() -> operatorJoystick.getPOV() > 315 || (operatorJoystick.getPOV() >= 0 && operatorJoystick.getPOV() < 45) );
     Trigger intakeReverse = new Trigger(() -> operatorJoystick.getPOV() > 135 && operatorJoystick.getPOV() < 215);
     intakeForward.whileActiveContinuous(new IntakeRun(m_intake, -1));
     intakeReverse.whileActiveContinuous(new IntakeRun(m_intake, 1));
+
+    final JoystickButton intakeUpButton = new JoystickButton(operatorJoystick, Constants.IntakeConstants.IntakeUpButton);
+    intakeUpButton.whenPressed(new IntakeLift(m_intake, 1));
+    final JoystickButton intakeDownButton = new JoystickButton(operatorJoystick, Constants.IntakeConstants.IntakeDownButton);
+    intakeDownButton.whenPressed(new IntakeLift(m_intake, 0));
 
     // Indexer Triggers
     Trigger indexerForward = new Trigger (() -> operatorJoystick.getPOV() >= 45 && operatorJoystick.getPOV() < 135) ;

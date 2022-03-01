@@ -5,42 +5,50 @@
 package frc.robot.commands;
 
 import edu.wpi.first.wpilibj2.command.CommandBase;
-import frc.robot.subsystems.Shooter;
+import frc.robot.subsystems.Intake;
 
-public class Shoot extends CommandBase {
-  /** Creates a new ShooterShoot. */
-  private final Shooter m_shooter;
-  public final double m_speed;
+public class IntakeLift extends CommandBase {
+  /** Creates a new IntakeLift. */
+  private final Intake m_intake;
+  private final int m_direction;
 
-  public Shoot(Shooter subsystem, double speed) {
+  public IntakeLift(Intake subsystem, int direction) {
     // Use addRequirements() here to declare subsystem dependencies.
-    m_speed = speed;
-    m_shooter = subsystem;
-    addRequirements(m_shooter);
+    m_intake = subsystem;
+    m_direction = direction;
+    addRequirements(m_intake);
   }
 
   // Called when the command is initially scheduled.
   @Override
-  public void initialize() {
-  }
+  public void initialize() {}
 
   // Called every time the scheduler runs while the command is scheduled.
   @Override
   public void execute() {
-
-    m_shooter.Start(m_speed);
+    if (m_direction == 1) {
+      m_intake.up();
+    }
+    else {
+      m_intake.down();
+    }
   }
 
   // Called once the command ends or is interrupted.
   @Override
-  public void end(boolean interrupted) {
-    m_shooter.Stop();
-    ;
-  }
+  public void end(boolean interrupted) {}
 
   // Returns true when the command should end.
   @Override
   public boolean isFinished() {
     return false;
+  }
+
+  public void up(){
+
+  }
+
+  public void down(){
+
   }
 }

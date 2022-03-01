@@ -30,7 +30,7 @@ public class Drive extends CommandBase {
         double forwardSpeed = RobotContainer.oi.getJoystickDriveForwardSpeed() * throttleSpeed;
         double rotation = RobotContainer.oi.getJoystickDriveRotation() * throttleSpeed;
 
-        m_drivetrain.arcadeDrive(forwardSpeed, rotation);
+        m_drivetrain.arcadeDrive(forwardSpeed, rotation*0.75);
     }
 
     // Called once the command ends or is interrupted.

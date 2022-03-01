@@ -8,6 +8,7 @@ package frc.robot.subsystems;
 import com.revrobotics.CANSparkMax;
 import com.revrobotics.RelativeEncoder;
 import com.revrobotics.SparkMaxPIDController;
+import com.revrobotics.CANSparkMax.IdleMode;
 import com.revrobotics.CANSparkMaxLowLevel.MotorType;
 
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
@@ -19,14 +20,30 @@ public class Shooter extends SubsystemBase {
 
   private CANSparkMax shooterMotorOne;
   private CANSparkMax shooterMotorTwo;
-  private SparkMaxPIDController m_pidControllerOne;
-  private RelativeEncoder m_encoderOne;
+  //private SparkMaxPIDController m_pidControllerOne;
+  //private RelativeEncoder m_encoderOne;
   public double kP, kI, kD, kIz, kFF, kMaxOutput, kMinOutput, maxRPM;
 
+  public void Start(double speed) {
+    shooterMotorOne.set(speed / -100);
+    //    shooterMotorTwo.set(speed / 100 * -1);
+  }
+
+  public void Stop() {
+    shooterMotorOne.set(0);
+//    shooterMotorTwo.set(0);
+  }
+
   public Shooter() {
-    //shooterMotorOne = new CANSparkMax(ShooterConstants.ShooterMotorOneId, MotorType.kBrushless);
-    shooterMotorTwo = new CANSparkMax(ShooterConstants.ShooterMotorTwoId, MotorType.kBrushless);
-    //shooterMotorTwo.follow(shooterMotorOne);
+    shooterMotorOne = new CANSparkMax(ShooterConstants.ShooterMotorOneId, MotorType.kBrushless);
+    //shooterMotorTwo = new CANSparkMax(ShooterConstants.ShooterMotorTwoId, MotorType.kBrushless);
+    shooterMotorOne.restoreFactoryDefaults();
+    //shooterMotorTwo.restoreFactoryDefaults();
+    
+    shooterMotorOne.setIdleMode(IdleMode.kCoast);
+    //shooterMotorTwo.setIdleMode(IdleMode.kCoast);
+
+  //  shooterMotorTwo.follow(shooterMotorOne);
 
     // /**
     //  * In order to use PID functionality for a controller, a SparkMaxPIDController
@@ -128,11 +145,4 @@ public class Shooter extends SubsystemBase {
     // SmartDashboard.putNumber("ProcessVariable", m_encoderOne.getVelocity());
   }
 
-  public void Start(double speed) {
-    shooterMotorTwo.set(speed / 100);
-  }
-
-  public void Stop() {
-    shooterMotorTwo.set(0);
-  }
 }
