@@ -195,7 +195,7 @@ public class Climber extends SubsystemBase {
   }
 
   public void Start(int direction, Arm arm) {
-    double speed = 80.0 * direction;
+    double speed = 30.0 * direction;
     if (arm == Arm.Left) {
       m_motorLeft.set(speed);
     } else if (arm == Arm.Right) {
