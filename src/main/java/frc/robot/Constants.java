@@ -27,10 +27,10 @@ public final class Constants {
 
     // Drive system constants
     public static final class DriveConstants {
-        public static final int RightMasterMotorId = 1;
-        public static final int RightSlaveMototId = 2;
-        public static final int LeftMasterMotorId = 3;
-        public static final int LeftSlaveMotorId = 4;
+        public static final int RightMasterMotorId = 3;
+        public static final int RightSlaveMototId = 4;
+        public static final int LeftMasterMotorId = 1;
+        public static final int LeftSlaveMotorId = 2;
 
     }
 

@@ -113,7 +113,7 @@ public class RobotContainer {
   private void configureButtonBindings() {
     // Create Shooter buttons
     final JoystickButton shooterShootButtonOne = new JoystickButton(driveJoystick, 1);
-    shooterShootButtonOne.whileActiveContinuous(new Shoot(m_shooter, 75));
+    shooterShootButtonOne.whileHeld(new Shoot(m_shooter, 75));
     final JoystickButton shooterShootButtonTwo = new JoystickButton(driveJoystick, 12);
     shooterShootButtonTwo.whileActiveContinuous(new Shoot(m_shooter, 60));
     final JoystickButton shooterShootButtonThree = new JoystickButton(driveJoystick, 11);

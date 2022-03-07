@@ -12,17 +12,27 @@
 
 package frc.robot.subsystems;
 
+import frc.robot.Constants;
 import frc.robot.Constants.DriveConstants;
 import edu.wpi.first.wpilibj.drive.DifferentialDrive;
+import edu.wpi.first.wpilibj.motorcontrol.MotorControllerGroup;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
 import com.revrobotics.CANSparkMax;
+import com.revrobotics.CANSparkMax.IdleMode;
 import com.revrobotics.CANSparkMaxLowLevel.MotorType;
+
+import com.ctre.phoenix.motorcontrol.ControlMode;
+import com.ctre.phoenix.motorcontrol.FeedbackDevice;
+import com.ctre.phoenix.motorcontrol.can.WPI_TalonSRX;
+import com.ctre.phoenix.sensors.WPI_PigeonIMU;
 
 /**
  *
  */
 public class Drivetrain extends SubsystemBase {
 
+    private MotorControllerGroup leftMotors;
+    private MotorControllerGroup rightMotors;
     private CANSparkMax leftMaster;
     private CANSparkMax leftSlave;
     private CANSparkMax rightSlave;
@@ -35,20 +45,39 @@ public class Drivetrain extends SubsystemBase {
     public Drivetrain() {
 
         rightMaster = new CANSparkMax(DriveConstants.RightMasterMotorId, MotorType.kBrushless);
-        rightMaster.setInverted(true);
+        rightMaster.restoreFactoryDefaults();
+        rightMaster.setInverted(false);
+        rightMaster.setIdleMode(IdleMode.kBrake);
+        rightMaster.burnFlash();
 
         rightSlave = new CANSparkMax(DriveConstants.RightSlaveMototId, MotorType.kBrushless);
+        rightSlave.restoreFactoryDefaults();
         rightSlave.follow(rightMaster);
-        rightSlave.setInverted(true);
+        rightSlave.setInverted(false);
+        rightSlave.setIdleMode(IdleMode.kBrake);
+        rightSlave.burnFlash();
 
         leftMaster = new CANSparkMax(DriveConstants.LeftMasterMotorId, MotorType.kBrushless);
-        leftMaster.setInverted(false);
+        leftMaster.restoreFactoryDefaults();
+        leftMaster.setInverted(true);
+        leftMaster.setIdleMode(IdleMode.kBrake);
+        leftMaster.burnFlash();
 
         leftSlave = new CANSparkMax(DriveConstants.LeftSlaveMotorId, MotorType.kBrushless);
+        leftSlave.restoreFactoryDefaults();
         leftSlave.follow(leftMaster);
-        leftSlave.setInverted(false);
+        leftSlave.setInverted(true);
+        leftSlave.setIdleMode(IdleMode.kBrake);
+        leftSlave.burnFlash();
+
+        //leftMotors = new MotorControllerGroup(leftMaster, leftSlave);
+        //rightMotors = new MotorControllerGroup(rightMaster, rightSlave);
 
         differentialDrive = new DifferentialDrive(leftMaster, rightMaster);
+        // differentialDrive = new DifferentialDrive(leftMotors, rightMotors);
+
+        WPI_TalonSRX talon = new WPI_TalonSRX(Constants.IndexerConstants.IndexerMotorOneId); 
+        WPI_PigeonIMU gyro = new WPI_PigeonIMU(talon); // Pigeon uses the talon created above
 
     }
 
@@ -65,7 +94,7 @@ public class Drivetrain extends SubsystemBase {
     }
 
     public void arcadeDrive(final double speed, final double rotation) {
-        differentialDrive.arcadeDrive(speed, -rotation);
+        differentialDrive.arcadeDrive(speed, rotation);
     }
 
     public void stop() {
