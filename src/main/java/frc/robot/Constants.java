@@ -54,6 +54,12 @@ public final class Constants {
         public static final int MediumTraverseReleaseId = 5;
         public static final int ClimberMotorOneId = 7;
         public static final int ClimberMotorTwoId = 8;
+        public static final int firstBarRightLimitSwitch = 2;
+        public static final int secondBarRightLimitSwitch = 1;
+        public static final int thirdBarRightLimitSwitch = 3;
+        public static final int firstBarLeftLimitSwitch = 5;
+        public static final int secondBarLeftLimitSwitch = 4;
+        public static final int thirdBarLeftLimitSwitch = 6;
         public static final int BreakServoOneId = 0;
         public static final int BreakServoTwoId = 1;
 

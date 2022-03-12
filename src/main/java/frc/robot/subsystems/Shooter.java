@@ -139,4 +139,15 @@ public class Shooter extends SubsystemBase {
     SmartDashboard.putNumber("ProcessVariable", m_encoderOne.getVelocity());
   }
 
+  public boolean isWheelUpToSpeed(double desiredSpeed) {
+    double rpm = m_encoderOne.getVelocity();
+    if (rpm > desiredSpeed - 50) {
+      if (rpm < desiredSpeed + 50) {
+        return true;
+      }
+    } else if (rpm > desiredSpeed + 50 || rpm < desiredSpeed - 50) {
+      return false;
+    }
+    return false;
+  }
 }

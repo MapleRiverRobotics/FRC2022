@@ -38,7 +38,7 @@ public class Climber extends SubsystemBase {
       ClimberConstants.MediumTraverseGrabId, ClimberConstants.MediumTraverseReleaseId);
   DoubleSolenoid highValve = new DoubleSolenoid(PneumaticsModuleType.CTREPCM, ClimberConstants.HighValveGrabId,
       ClimberConstants.HighValveReleaseId);
-  Servo brakeServo = new Servo(1);
+  //Servo brakeServo = new Servo(ClimberConstants.BreakServoOneId);
 
   public Climber() {
     m_motorLeft = new CANSparkMax(ClimberConstants.ClimberMotorOneId, MotorType.kBrushless);
@@ -103,13 +103,13 @@ public class Climber extends SubsystemBase {
   }
 
   public void EngageBrake() {
-    brakeServo.setAngle(180);
-    SmartDashboard.putNumber("Brake Servo Angle", brakeServo.getAngle());
+    //brakeServo.setAngle(180);
+    //SmartDashboard.putNumber("Brake Servo Angle", brakeServo.getAngle());
   }
 
   public void DisengageBrake() {
-    brakeServo.setAngle(0);
-    SmartDashboard.putNumber("Brake Servo Angle", brakeServo.getAngle());
+    //brakeServo.setAngle(0);
+    //SmartDashboard.putNumber("Brake Servo Angle", brakeServo.getAngle());
   }
 
   public void MediumTraverseRelease() {

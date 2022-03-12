@@ -119,6 +119,10 @@ public class RobotContainer {
     final JoystickButton shooterShootButtonThree = new JoystickButton(driveJoystick, 11);
     shooterShootButtonThree.whileActiveContinuous(new Shoot(m_shooter, 40));
 
+    final JoystickButton shooterAimAndShoot = new JoystickButton(driveJoystick, 2);
+    shooterAimAndShoot.whileActiveContinuous(new AimAndShoot(m_shooter, m_drivetrain, m_indexer));
+
+
     // Intake Triggers
     Trigger intakeForward = new Trigger(() -> operatorJoystick.getPOV() > 315 || (operatorJoystick.getPOV() >= 0 && operatorJoystick.getPOV() < 45) );
     Trigger intakeReverse = new Trigger(() -> operatorJoystick.getPOV() > 135 && operatorJoystick.getPOV() < 215);

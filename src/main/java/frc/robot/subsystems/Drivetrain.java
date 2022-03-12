@@ -96,6 +96,9 @@ public class Drivetrain extends SubsystemBase {
     public void arcadeDrive(final double speed, final double rotation) {
         differentialDrive.arcadeDrive(speed, rotation);
     }
+    public void tankDrive(final double leftSpeed, final double rightSpeed) {
+        differentialDrive.tankDrive(leftSpeed, rightSpeed);
+    }
 
     public void stop() {
         differentialDrive.arcadeDrive(0, 0);
