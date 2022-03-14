@@ -18,6 +18,7 @@ import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
 import frc.robot.Constants.ClimberConstants;
 import frc.robot.Constants.ClimberConstants.Arm;
+import edu.wpi.first.wpilibj.DigitalInput;
 
 public class Climber extends SubsystemBase {
 
@@ -39,6 +40,8 @@ public class Climber extends SubsystemBase {
   DoubleSolenoid highValve = new DoubleSolenoid(PneumaticsModuleType.CTREPCM, ClimberConstants.HighValveGrabId,
       ClimberConstants.HighValveReleaseId);
   //Servo brakeServo = new Servo(ClimberConstants.BreakServoOneId);
+
+	public DigitalInput firstBarRightLimitSwitch, secondBarRightLimitSwitch, thirdBarRightLimitSwitch, firstBarLeftLimitSwitch, secondBarLeftLimitSwitch, thirdBarLeftLimitSwitch;
 
   public Climber() {
     m_motorLeft = new CANSparkMax(ClimberConstants.ClimberMotorOneId, MotorType.kBrushless);
@@ -100,6 +103,13 @@ public class Climber extends SubsystemBase {
     SmartDashboard.putNumber("Feed Forward", kFF);
     SmartDashboard.putNumber("Max Output", kMaxOutput);
     SmartDashboard.putNumber("Min Output", kMinOutput);
+
+    firstBarRightLimitSwitch = new DigitalInput(ClimberConstants.firstBarRightLimitSwitch);
+    secondBarRightLimitSwitch = new DigitalInput(ClimberConstants.secondBarRightLimitSwitch);
+    thirdBarRightLimitSwitch = new DigitalInput(ClimberConstants.thirdBarRightLimitSwitch);
+    firstBarLeftLimitSwitch = new DigitalInput(ClimberConstants.firstBarLeftLimitSwitch);
+    secondBarLeftLimitSwitch = new DigitalInput(ClimberConstants.secondBarLeftLimitSwitch);
+    thirdBarLeftLimitSwitch = new DigitalInput(ClimberConstants.thirdBarLeftLimitSwitch);
   }
 
   public void EngageBrake() {

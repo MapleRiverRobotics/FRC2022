@@ -8,14 +8,10 @@ import edu.wpi.first.wpilibj2.command.CommandBase;
 import frc.robot.Constants.ClimberConstants.Arm;
 import frc.robot.Constants.ClimberConstants;
 import frc.robot.subsystems.Climber;
-import edu.wpi.first.wpilibj.DigitalInput;
-
 
 public class Rotate extends CommandBase {
 
-	DigitalInput firstBarRightLimitSwitch, secondBarRightLimitSwitch, thirdBarRightLimitSwitch, firstBarLeftLimitSwitch, secondBarLeftLimitSwitch, thirdBarLeftLimitSwitch;
-
-	private final Climber m_climber;
+  private final Climber m_climber;
 	private final int m_direction;
 	private final Arm m_arm;
  
@@ -26,13 +22,6 @@ public class Rotate extends CommandBase {
     m_direction = direction;
     m_arm = arm;
     addRequirements(m_climber);
-
-    firstBarRightLimitSwitch = new DigitalInput(ClimberConstants.firstBarRightLimitSwitch);
-    secondBarRightLimitSwitch = new DigitalInput(ClimberConstants.secondBarRightLimitSwitch);
-    thirdBarRightLimitSwitch = new DigitalInput(ClimberConstants.thirdBarRightLimitSwitch);
-    firstBarLeftLimitSwitch = new DigitalInput(ClimberConstants.firstBarLeftLimitSwitch);
-    secondBarLeftLimitSwitch = new DigitalInput(ClimberConstants.secondBarLeftLimitSwitch);
-    thirdBarLeftLimitSwitch = new DigitalInput(ClimberConstants.thirdBarLeftLimitSwitch);
   }
 
   // Called when the command is initially scheduled.
@@ -45,19 +34,13 @@ public class Rotate extends CommandBase {
   public void execute() {
       //m_climber.SetArmAngle(360 * m_direction, m_arm);
     //m_climber.Start(m_direction, m_arm);
-    if(firstBarRightLimitSwitch.get() || firstBarLeftLimitSwitch.get()){
-      m_climber.MediumTraverseRelease();
-    }else{
+    if(m_climber.firstBarRightLimitSwitch.get() == false && m_climber.firstBarLeftLimitSwitch.get() == false){
       m_climber.MediumTraverseGrab();
     }
-    if(secondBarRightLimitSwitch.get() || secondBarLeftLimitSwitch.get()){
-      m_climber.HighRelease();
-    }else{
+    if(m_climber.secondBarRightLimitSwitch.get() == false && m_climber.secondBarLeftLimitSwitch.get() == false){
       m_climber.HighGrab();
     }
-    if(thirdBarRightLimitSwitch.get() || thirdBarLeftLimitSwitch.get()){
-      m_climber.MediumTraverseRelease();
-    }else{
+    if(m_climber.thirdBarRightLimitSwitch.get() == false && m_climber.thirdBarLeftLimitSwitch.get() == false){
       m_climber.MediumTraverseGrab();
     }
   }
@@ -66,6 +49,8 @@ public class Rotate extends CommandBase {
   @Override
   public void end(boolean interrupted) {
     m_climber.Stop(m_arm);
+    m_climber.MediumTraverseRelease();
+    m_climber.HighRelease();
   }
 
   // Returns true when the command should end.
@@ -73,4 +58,6 @@ public class Rotate extends CommandBase {
   public boolean isFinished() {
     return false;
   }
+
+
 }
