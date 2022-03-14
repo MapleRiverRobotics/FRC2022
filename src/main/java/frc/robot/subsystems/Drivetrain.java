@@ -70,11 +70,11 @@ public class Drivetrain extends SubsystemBase {
         leftSlave.setIdleMode(IdleMode.kBrake);
         leftSlave.burnFlash();
 
-        //leftMotors = new MotorControllerGroup(leftMaster, leftSlave);
-        //rightMotors = new MotorControllerGroup(rightMaster, rightSlave);
+        leftMotors = new MotorControllerGroup(leftMaster, leftSlave);
+        rightMotors = new MotorControllerGroup(rightMaster, rightSlave);
 
-        differentialDrive = new DifferentialDrive(leftMaster, rightMaster);
-        // differentialDrive = new DifferentialDrive(leftMotors, rightMotors);
+        //differentialDrive = new DifferentialDrive(leftMaster, rightMaster);
+        differentialDrive = new DifferentialDrive(leftMotors, rightMotors);
 
         WPI_TalonSRX talon = new WPI_TalonSRX(Constants.IndexerConstants.IndexerMotorOneId); 
         WPI_PigeonIMU gyro = new WPI_PigeonIMU(talon); // Pigeon uses the talon created above

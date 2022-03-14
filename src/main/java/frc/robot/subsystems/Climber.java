@@ -27,7 +27,7 @@ public class Climber extends SubsystemBase {
   public SparkMaxPIDController PidControllerLeft;
   public SparkMaxPIDController PidControllerRight;
   private RelativeEncoder m_encoderLeft;
-  //private RelativeEncoder m_encoderRight;
+  // private RelativeEncoder m_encoderRight;
   public double kP, kI, kD, kIz, kFF, kMaxOutput, kMinOutput;
   private double rotations;
 
@@ -42,7 +42,8 @@ public class Climber extends SubsystemBase {
   Servo brakeServoRight = new Servo(ClimberConstants.BreakServoOneId);
   Servo brakeServoLeft = new Servo(ClimberConstants.BreakServoTwoId);
 
-	public DigitalInput firstBarRightLimitSwitch, secondBarRightLimitSwitch, thirdBarRightLimitSwitch, firstBarLeftLimitSwitch, secondBarLeftLimitSwitch, thirdBarLeftLimitSwitch;
+  public DigitalInput firstBarRightLimitSwitch, secondBarRightLimitSwitch, thirdBarRightLimitSwitch,
+      firstBarLeftLimitSwitch, secondBarLeftLimitSwitch, thirdBarLeftLimitSwitch;
 
   public Climber() {
     m_motorLeft = new CANSparkMax(ClimberConstants.ClimberMotorOneId, MotorType.kBrushless);
@@ -66,7 +67,7 @@ public class Climber extends SubsystemBase {
 
     // Encoder object created to display position values
     m_encoderLeft = m_motorLeft.getEncoder();
-    //m_encoderRight = m_motorRight.getEncoder();
+    // m_encoderRight = m_motorRight.getEncoder();
 
     // m_encoderLeft.setPositionConversionFactor(1.0 / gearRatio);
     // m_encoderRight.setPositionConversionFactor(1.0 / gearRatio);
@@ -241,5 +242,25 @@ public class Climber extends SubsystemBase {
   @Override
   public void periodic() {
     // This method will be called once per scheduler run
+  }
+
+  // Limit switch methods
+  public boolean IsFirstBarRightLimitSwitchOn() {
+    return firstBarRightLimitSwitch.get() == true;
+  }
+  public boolean IsFirstBarLeftLimitSwitchOn() {
+    return firstBarLeftLimitSwitch.get() == true;
+  }
+  public boolean IsSecondBarRightLimitSwitchOn() {
+    return secondBarRightLimitSwitch.get() == true;
+  }
+  public boolean IsSecondBarLeftLimitSwitchOn() {
+    return secondBarLeftLimitSwitch.get() == true;
+  }
+  public boolean IsThirdBarRightLimitSwitchOn() {
+    return thirdBarRightLimitSwitch.get() == true;
+  }
+  public boolean IsThirdBarLeftLimitSwitchOn() {
+    return thirdBarLeftLimitSwitch.get() == true;
   }
 }
