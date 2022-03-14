@@ -39,7 +39,8 @@ public class Climber extends SubsystemBase {
       ClimberConstants.MediumTraverseGrabId, ClimberConstants.MediumTraverseReleaseId);
   DoubleSolenoid highValve = new DoubleSolenoid(PneumaticsModuleType.CTREPCM, ClimberConstants.HighValveGrabId,
       ClimberConstants.HighValveReleaseId);
-  //Servo brakeServo = new Servo(ClimberConstants.BreakServoOneId);
+  Servo brakeServoRight = new Servo(ClimberConstants.BreakServoOneId);
+  Servo brakeServoLeft = new Servo(ClimberConstants.BreakServoTwoId);
 
 	public DigitalInput firstBarRightLimitSwitch, secondBarRightLimitSwitch, thirdBarRightLimitSwitch, firstBarLeftLimitSwitch, secondBarLeftLimitSwitch, thirdBarLeftLimitSwitch;
 
@@ -113,13 +114,17 @@ public class Climber extends SubsystemBase {
   }
 
   public void EngageBrake() {
-    //brakeServo.setAngle(180);
-    //SmartDashboard.putNumber("Brake Servo Angle", brakeServo.getAngle());
+    brakeServoRight.setAngle(90);
+    SmartDashboard.putNumber("Brake Servo Angle", brakeServoRight.getAngle());
+    brakeServoLeft.setAngle(90);
+    SmartDashboard.putNumber("Brake Servo Angle", brakeServoLeft.getAngle());
   }
 
   public void DisengageBrake() {
-    //brakeServo.setAngle(0);
-    //SmartDashboard.putNumber("Brake Servo Angle", brakeServo.getAngle());
+    brakeServoRight.setAngle(180);
+    SmartDashboard.putNumber("Brake Servo Angle", brakeServoRight.getAngle());
+    brakeServoLeft.setAngle(0);
+    SmartDashboard.putNumber("Brake Servo Angle", brakeServoLeft.getAngle());
   }
 
   public void MediumTraverseRelease() {
@@ -205,7 +210,7 @@ public class Climber extends SubsystemBase {
   }
 
   public void Start(int direction, Arm arm) {
-    double speed = .50 * direction;
+    double speed = .1 * direction;
     if (arm == Arm.Left) {
       m_motorLeft.set(speed);
     } else if (arm == Arm.Right) {
