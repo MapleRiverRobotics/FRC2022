@@ -211,7 +211,7 @@ public class Climber extends SubsystemBase {
   }
 
   public void Start(int direction, Arm arm) {
-    double speed = .1 * direction;
+    double speed = .5 * direction;
     if (arm == Arm.Left) {
       m_motorLeft.set(speed);
     } else if (arm == Arm.Right) {
@@ -245,22 +245,22 @@ public class Climber extends SubsystemBase {
   }
 
   // Limit switch methods
-  public boolean IsFirstBarRightLimitSwitchOn() {
+  public boolean IsFirstBarRightLimitSwitchPressed() {
     return firstBarRightLimitSwitch.get() == true;
   }
-  public boolean IsFirstBarLeftLimitSwitchOn() {
+  public boolean IsFirstBarLeftLimitSwitchPressed() {
     return firstBarLeftLimitSwitch.get() == true;
   }
-  public boolean IsSecondBarRightLimitSwitchOn() {
+  public boolean IsSecondBarRightLimitSwitchPressed() {
     return secondBarRightLimitSwitch.get() == true;
   }
-  public boolean IsSecondBarLeftLimitSwitchOn() {
+  public boolean IsSecondBarLeftLimitSwitchPressed() {
     return secondBarLeftLimitSwitch.get() == true;
   }
-  public boolean IsThirdBarRightLimitSwitchOn() {
+  public boolean IsThirdBarRightLimitSwitchPressed() {
     return thirdBarRightLimitSwitch.get() == true;
   }
-  public boolean IsThirdBarLeftLimitSwitchOn() {
+  public boolean IsThirdBarLeftLimitSwitchPressed() {
     return thirdBarLeftLimitSwitch.get() == true;
   }
 }

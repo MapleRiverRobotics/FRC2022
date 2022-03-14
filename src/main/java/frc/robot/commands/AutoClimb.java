@@ -61,7 +61,7 @@ public class AutoClimb extends CommandBase {
 
   public void climbFirstBar(){
     if(barOneFinished == false){
-      if(m_climber.firstBarRightLimitSwitch.get() == true && m_climber.firstBarLeftLimitSwitch.get() == true){
+      if(m_climber.IsFirstBarLeftLimitSwitchPressed() && m_climber.IsFirstBarRightLimitSwitchPressed()){
         barOneFinished = true;
         barOneGrabbed = true;
         m_climber.MediumTraverseGrab();
@@ -72,7 +72,7 @@ public class AutoClimb extends CommandBase {
   public void climbSecondBar(){
     if(barTwoFinished == false){
       //Check and grab bar 2
-      if(m_climber.secondBarRightLimitSwitch.get() == true && m_climber.secondBarLeftLimitSwitch.get() == true){
+      if(m_climber.IsSecondBarLeftLimitSwitchPressed() && m_climber.IsSecondBarRightLimitSwitchPressed()){
         m_climber.HighGrab();
         barTwoGrabbed = true;
         m_climber.Stop(Arm.Both);
@@ -85,22 +85,22 @@ public class AutoClimb extends CommandBase {
   public void climbThirdBar(){
     //Release first bar
     if(barOneGrabbed == true){
-      if(m_climber.firstBarLeftLimitSwitch.get() == false || m_climber.firstBarRightLimitSwitch.get() == false){
-        m_climber.Start(-1, Arm.Both);
-      }else{
+      if(m_climber.IsFirstBarLeftLimitSwitchPressed() || m_climber.IsFirstBarRightLimitSwitchPressed()){
         m_climber.MediumTraverseRelease();
         m_climber.Stop(Arm.Both);
         barOneGrabbed = false;
+      }else{
+        m_climber.Start(-1, Arm.Both);
       }
     //Swing to third bar
     }else{
-      if(m_climber.thirdBarRightLimitSwitch.get() == false || m_climber.thirdBarLeftLimitSwitch.get() == false){
-        m_climber.Start(1, Arm.Both);
-      }else{
+      if(m_climber.IsThirdBarLeftLimitSwitchPressed() || m_climber.IsThirdBarRightLimitSwitchPressed()){
         m_climber.MediumTraverseGrab();
         m_climber.Stop(Arm.Both);
         m_climber.EngageBrake();
         m_climber.HighRelease();
+      }else{
+        m_climber.Start(1, Arm.Both);
       }
     }
   }
