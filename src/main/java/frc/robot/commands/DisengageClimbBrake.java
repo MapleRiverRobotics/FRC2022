@@ -15,7 +15,8 @@ public class DisengageClimbBrake extends CommandBase {
     private Climber m_climber;
 
   public DisengageClimbBrake(Climber climber) {
-    addRequirements(m_climber);
+    addRequirements(climber);
+    m_climber = climber;
   }
 
   // Called when the command is initially scheduled.

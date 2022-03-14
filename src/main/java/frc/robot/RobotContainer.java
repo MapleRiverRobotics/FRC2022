@@ -159,7 +159,7 @@ public class RobotContainer {
     final JoystickButton grab1Button = new JoystickButton(operatorJoystick, 3);
     final JoystickButton grab2Button = new JoystickButton(operatorJoystick, 4);
     final JoystickButton grab3Button = new JoystickButton(operatorJoystick, 2);
-    final JoystickButton releaseClimbBreakButon = new JoystickButton(operatorJoystick, 1);
+    final JoystickButton releaseClimbBrakeButon = new JoystickButton(operatorJoystick, 1);
 
     //Grab
     // releaseButton.negate().and(grab1Button).whileActiveOnce(new Grab(m_climber, 1));
@@ -168,7 +168,7 @@ public class RobotContainer {
     releaseButton.negate().and(grab1Button).whileActiveContinuous(new AutoClimb(m_climber, 1));
     releaseButton.negate().and(grab2Button).whileActiveContinuous(new AutoClimb(m_climber, 2));
     releaseButton.negate().and(grab3Button).whileActiveContinuous(new AutoClimb(m_climber, 3));
-    releaseClimbBreakButon.whileActiveOnce(new DisengageClimbBrake(m_climber));
+    releaseClimbBrakeButon.whileActiveOnce(new DisengageClimbBrake(m_climber));
 
     // Release
     releaseButton.and(grab1Button).whileActiveOnce(new Release(m_climber, 1));
