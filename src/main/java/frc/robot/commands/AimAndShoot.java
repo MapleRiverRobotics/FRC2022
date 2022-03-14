@@ -5,7 +5,6 @@ import edu.wpi.first.networktables.NetworkTableInstance;
 import edu.wpi.first.wpilibj.Timer;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.CommandBase;
-import frc.robot.RobotContainer;
 import frc.robot.subsystems.Drivetrain;
 import frc.robot.subsystems.Indexer;
 import frc.robot.subsystems.Shooter;
@@ -16,12 +15,12 @@ public class AimAndShoot extends CommandBase {
     /**
      * Creates a new AimAndShoot.
      */
-    double KpAim = -0.025f;
+    double KpAim = -0.050f;
     // double KpDistance = 0.1f;
     // double min_aim_command = 0.05f;
 
     double minSpeed = 0.3;
-    double minDegreeOffset = 1;
+    double minDegreeOffset = 2;
 
     double tx;
     double ty;
@@ -29,6 +28,7 @@ public class AimAndShoot extends CommandBase {
     private final Shooter m_shooter;
     private final Drivetrain m_drivetrain;
     private final Indexer m_indexer;
+    private final NetworkTable limelight = NetworkTableInstance.getDefault().getTable("limelight");
 
     public AimAndShoot(Shooter shooter, Drivetrain drivetrain, Indexer indexer) {
         // Use addRequirements() here to declare subsystem dependencies.
@@ -43,17 +43,17 @@ public class AimAndShoot extends CommandBase {
     // Called when the command is initially scheduled.
     @Override
     public void initialize() {
-        NetworkTable table = NetworkTableInstance.getDefault().getTable("limelight");
-        table.getEntry("ledMode").setNumber(3);
+
+        limelight.getEntry("ledMode").setNumber(3);
     }
 
     // Called every time the scheduler runs while the command is scheduled.
     @Override
     public void execute() {
-        NetworkTable table = NetworkTableInstance.getDefault().getTable("limelight");
-        tx = table.getEntry("tx").getDouble(0);
-        ty = table.getEntry("ty").getDouble(0);
-        tv = table.getEntry("tv").getDouble(0);
+        SmartDashboard.putBoolean("AimAndShoot End Called with interrupted:", false);
+        tx = limelight.getEntry("tx").getDouble(0);
+        ty = limelight.getEntry("ty").getDouble(0);
+        tv = limelight.getEntry("tv").getDouble(0);
 
         SmartDashboard.putNumber("tx", tx);
         SmartDashboard.putNumber("ty", ty);
@@ -61,16 +61,15 @@ public class AimAndShoot extends CommandBase {
 
         double turnSpeed = KpAim * tx;
 
+        SmartDashboard.putNumber("Caluclated Turnspeed", turnSpeed);
+
         if (0 < turnSpeed && turnSpeed < minSpeed) {
             turnSpeed = minSpeed;
         } else if (0 > turnSpeed && turnSpeed > -minSpeed) {
             turnSpeed = -minSpeed;
         }
 
-        if (tx > minDegreeOffset) {
-            m_drivetrain.tankDrive(turnSpeed, 0);
-            return;
-        } else if (tx < -minDegreeOffset) {
+        if (tx > minDegreeOffset || tx < -minDegreeOffset) {
             m_drivetrain.tankDrive(turnSpeed, 0);
             return;
         }
@@ -78,10 +77,10 @@ public class AimAndShoot extends CommandBase {
         m_drivetrain.tankDrive(0, 0);
         if ((tx > -minDegreeOffset && tx < minDegreeOffset) && tx != 0) {
             double rpm = GetShooterRpm();
-            //m_shooter.Start(rpm);
-            if (m_shooter.isWheelUpToSpeed(rpm) == true) {
-                Timer.delay(1);
-                m_indexer.Start(1);
+            m_shooter.runShooterAtRpm(rpm);
+            if (m_shooter.isWheelUpToSpeed(rpm)) {
+                Timer.delay(0.5);
+                m_indexer.Start(-1);
             }
         }
     }
@@ -111,17 +110,15 @@ public class AimAndShoot extends CommandBase {
     // Called once the command ends or is interrupted.
     @Override
     public void end(boolean interrupted) {
-        m_drivetrain.tankDrive(0, 0);
+        m_drivetrain.stop();;
         m_shooter.Stop();
         m_indexer.Stop();
-        NetworkTable table = NetworkTableInstance.getDefault().getTable("limelight");
-        table.getEntry("ledMode").setNumber(1);
+        //limelight.getEntry("ledMode").setNumber(1);
     }
 
     // Returns true when the command should end.
     @Override
     public boolean isFinished() {
-        // return (tx > -minDegreeOffset && tx < minDegreeOffset) && tx != 0;
         return false;
     }
 }
