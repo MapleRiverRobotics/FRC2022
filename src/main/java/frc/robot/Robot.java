@@ -118,8 +118,6 @@ public class Robot extends TimedRobot {
    */
   @Override
   public void teleopPeriodic() {
-    m_teleopCommand = new Drive(RobotContainer.getInstance().getDriveTrain());
-    m_teleopCommand.schedule();
   }
 
   @Override

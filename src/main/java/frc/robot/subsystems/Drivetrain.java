@@ -101,7 +101,7 @@ public class Drivetrain extends SubsystemBase {
     }
 
     public void stop() {
-        differentialDrive.arcadeDrive(0, 0);
+        differentialDrive.stopMotor();
     }
 
     // Put methods for controlling this subsystem
