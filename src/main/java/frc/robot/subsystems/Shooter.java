@@ -18,7 +18,7 @@ public class Shooter extends SubsystemBase {
   /** Creates a new Shooter. */
 
   private CANSparkMax shooterMotorOne;
-  // private CANSparkMax shooterMotorTwo;
+  private CANSparkMax shooterMotorTwo;
   private SparkMaxPIDController m_pidControllerOne;
   private RelativeEncoder m_encoderOne;
   public double kP, kI, kD, kIz, kFF, kMaxOutput, kMinOutput, kRPM;
@@ -31,20 +31,19 @@ public class Shooter extends SubsystemBase {
 
   public void Stop() {
     shooterMotorOne.set(0);
-    // shooterMotorTwo.set(0);
+    shooterMotorTwo.set(0);
   }
 
   public Shooter() {
     shooterMotorOne = new CANSparkMax(ShooterConstants.ShooterMotorOneId, MotorType.kBrushless);
     shooterMotorOne.setInverted(true);
-    // shooterMotorTwo = new CANSparkMax(ShooterConstants.ShooterMotorTwoId,
-    // MotorType.kBrushless);
+    shooterMotorTwo = new CANSparkMax(ShooterConstants.ShooterMotorTwoId, MotorType.kBrushless);
     // shooterMotorOne.restoreFactoryDefaults();
     // shooterMotorTwo.restoreFactoryDefaults();
 
     shooterMotorOne.setIdleMode(IdleMode.kCoast);
-    // shooterMotorTwo.setIdleMode(IdleMode.kCoast);
-    // shooterMotorTwo.follow(shooterMotorOne);
+    shooterMotorTwo.setIdleMode(IdleMode.kCoast);
+    shooterMotorTwo.follow(shooterMotorOne, true);
 
     m_pidControllerOne = shooterMotorOne.getPIDController();
 

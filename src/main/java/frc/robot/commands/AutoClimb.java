@@ -13,12 +13,12 @@ import frc.robot.Constants.ClimberConstants;
 import frc.robot.subsystems.Climber;
 
 public class AutoClimb extends CommandBase {
-    private final Climber m_climber;
-    private final int m_barNumber;
-    public boolean barOneFinished;
-    public static boolean barOneGrabbed = false;
-    public boolean barTwoFinished, barTwoGrabbed;
-    public boolean barThreeFinished;
+  private final Climber m_climber;
+  private final int m_barNumber;
+  public boolean barOneFinished;
+  public static boolean barOneGrabbed = false;
+  public boolean barTwoFinished, barTwoGrabbed;
+  public boolean barThreeFinished;
 
   public AutoClimb(Climber climber, int barNumber) {
     m_climber = climber;
@@ -38,12 +38,14 @@ public class AutoClimb extends CommandBase {
   // Called every time the scheduler runs while the command is scheduled.
   @Override
   public void execute() {
-    if(m_barNumber == 1){
+    if (m_barNumber == 1) {
       climbFirstBar();
-    }else if(m_barNumber == 2){
+    } else if (m_barNumber == 2) {
       climbSecondBar();
-    }else if(m_barNumber == 3){
+    } else if (m_barNumber == 3) {
       climbThirdBar();
+    } else if (m_barNumber == 4){
+      climbFourthBar();
     }
   }
 
@@ -59,49 +61,79 @@ public class AutoClimb extends CommandBase {
     return false;
   }
 
-  public void climbFirstBar(){
-    if(barOneFinished == false){
-      if(m_climber.IsFirstBarLeftLimitSwitchPressed() && m_climber.IsFirstBarRightLimitSwitchPressed()){
+  public void climbFirstBar() {
+    if (barOneFinished == false) {
+      if (m_climber.IsFirstBarLeftLimitSwitchPressed() && m_climber.IsFirstBarRightLimitSwitchPressed()) {
         barOneFinished = true;
         barOneGrabbed = true;
         m_climber.MediumTraverseGrab();
+        // delay for 250 millisecond
+        try {
+          Thread.sleep(125);
+        } catch (InterruptedException e) {
+          e.printStackTrace();
+        }
+        m_climber.Stop(Arm.Both);
+      } else {
+        m_climber.Start(-1, Arm.Both);
       }
     }
   }
 
-  public void climbSecondBar(){
-    if(barTwoFinished == false){
-      //Check and grab bar 2
-      if(m_climber.IsSecondBarLeftLimitSwitchPressed() && m_climber.IsSecondBarRightLimitSwitchPressed()){
+  public void climbSecondBar() {
+    if (barTwoFinished == false) {
+      // Check and grab bar 2
+      if (m_climber.IsSecondBarLeftLimitSwitchPressed() && m_climber.IsSecondBarRightLimitSwitchPressed()) {
         m_climber.HighGrab();
+        // delay for 250 millisecond
+        try {
+          Thread.sleep(125);
+        } catch (InterruptedException e) {
+          e.printStackTrace();
+        }
         barTwoGrabbed = true;
         m_climber.Stop(Arm.Both);
-      }else{
+      } else {
         m_climber.Start(1, Arm.Both);
       }
     }
   }
 
-  public void climbThirdBar(){
-    //Release first bar
-    if(barOneGrabbed == true){
-      if(m_climber.IsFirstBarLeftLimitSwitchPressed() || m_climber.IsFirstBarRightLimitSwitchPressed()){
+  public void climbThirdBar() {
+    // Release first bar
+    if (barOneGrabbed == true) {
+      if (m_climber.IsFirstBarLeftLimitSwitchPressed() || m_climber.IsFirstBarRightLimitSwitchPressed()) {
         m_climber.MediumTraverseRelease();
         m_climber.Stop(Arm.Both);
         barOneGrabbed = false;
-      }else{
+        // delay for 250 millisecond
+        try {
+          Thread.sleep(250);
+        } catch (InterruptedException e) {
+          e.printStackTrace();
+        }
+      } else {
         m_climber.Start(-1, Arm.Both);
       }
-    //Swing to third bar
-    }else{
-      if(m_climber.IsThirdBarLeftLimitSwitchPressed() || m_climber.IsThirdBarRightLimitSwitchPressed()){
+      // Swing to third bar
+    } else {
+      if (m_climber.IsThirdBarLeftLimitSwitchPressed() && m_climber.IsThirdBarRightLimitSwitchPressed()) {
         m_climber.MediumTraverseGrab();
+        // delay for 250 millisecond
+        try {
+          Thread.sleep(125);
+        } catch (InterruptedException e) {
+          e.printStackTrace();
+        }
         m_climber.Stop(Arm.Both);
         m_climber.EngageBrake();
-        m_climber.HighRelease();
-      }else{
+      } else {
         m_climber.Start(1, Arm.Both);
       }
     }
+  }
+
+  public void climbFourthBar(){
+
   }
 }
