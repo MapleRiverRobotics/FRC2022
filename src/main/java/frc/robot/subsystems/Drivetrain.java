@@ -61,27 +61,23 @@ public class Drivetrain<Encoder> extends SubsystemBase {
         rightMaster.restoreFactoryDefaults();
         rightMaster.setInverted(false);
         rightMaster.setIdleMode(IdleMode.kBrake);
-        rightMaster.burnFlash();
 
         rightSlave = new CANSparkMax(DriveConstants.RightSlaveMototId, MotorType.kBrushless);
         rightSlave.restoreFactoryDefaults();
         rightSlave.follow(rightMaster);
         rightSlave.setInverted(false);
         rightSlave.setIdleMode(IdleMode.kBrake);
-        rightSlave.burnFlash();
 
         leftMaster = new CANSparkMax(DriveConstants.LeftMasterMotorId, MotorType.kBrushless);
         leftMaster.restoreFactoryDefaults();
         leftMaster.setInverted(true);
         leftMaster.setIdleMode(IdleMode.kBrake);
-        leftMaster.burnFlash();
 
         leftSlave = new CANSparkMax(DriveConstants.LeftSlaveMotorId, MotorType.kBrushless);
         leftSlave.restoreFactoryDefaults();
         leftSlave.follow(leftMaster);
         leftSlave.setInverted(true);
         leftSlave.setIdleMode(IdleMode.kBrake);
-        leftSlave.burnFlash();
 
         leftMotors = new MotorControllerGroup(leftMaster, leftSlave);
         rightMotors = new MotorControllerGroup(rightMaster, rightSlave);
@@ -96,11 +92,22 @@ public class Drivetrain<Encoder> extends SubsystemBase {
         m_rightEncoder = rightMaster.getEncoder();
         m_leftEncoder.setPositionConversionFactor(TrajectoryConstants.kEncoderDistancePerPulse);
         m_rightEncoder.setPositionConversionFactor(TrajectoryConstants.kEncoderDistancePerPulse);
-        m_leftEncoder.setVelocityConversionFactor(TrajectoryConstants.kEncoderDistancePerPulse);
-        m_rightEncoder.setVelocityConversionFactor(TrajectoryConstants.kEncoderDistancePerPulse);
+        m_leftEncoder.setVelocityConversionFactor(TrajectoryConstants.kEncoderDistancePerPulse / 60);
+        m_rightEncoder.setVelocityConversionFactor(TrajectoryConstants.kEncoderDistancePerPulse / 60);
 
         resetEncoders();
         m_odometry = new DifferentialDriveOdometry(m_gyro.getRotation2d());
+
+        try {
+            // ensure the CAN messages are recieved by controllers prior to burning them 
+            Thread.sleep(200);
+        } catch (InterruptedException e) {
+        }
+        rightMaster.burnFlash();
+        rightSlave.burnFlash();
+        leftMaster.burnFlash();
+        leftSlave.burnFlash();
+
     }
 
     /**
