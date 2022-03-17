@@ -14,12 +14,19 @@ package frc.robot.subsystems;
 
 import frc.robot.Constants;
 import frc.robot.Constants.DriveConstants;
+import frc.robot.Constants.TrajectoryConstants;
+import edu.wpi.first.math.geometry.Pose2d;
+import edu.wpi.first.math.kinematics.DifferentialDriveKinematics;
+import edu.wpi.first.math.kinematics.DifferentialDriveOdometry;
 import edu.wpi.first.wpilibj.drive.DifferentialDrive;
 import edu.wpi.first.wpilibj.motorcontrol.MotorControllerGroup;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
 import com.revrobotics.CANSparkMax;
+import com.revrobotics.RelativeEncoder;
 import com.revrobotics.CANSparkMax.IdleMode;
 import com.revrobotics.CANSparkMaxLowLevel.MotorType;
+import edu.wpi.first.math.kinematics.DifferentialDriveWheelSpeeds;
+
 
 import com.ctre.phoenix.motorcontrol.ControlMode;
 import com.ctre.phoenix.motorcontrol.FeedbackDevice;
@@ -27,9 +34,10 @@ import com.ctre.phoenix.motorcontrol.can.WPI_TalonSRX;
 import com.ctre.phoenix.sensors.WPI_PigeonIMU;
 
 /**
+ * @param <Encoder>
  *
  */
-public class Drivetrain extends SubsystemBase {
+public class Drivetrain<Encoder> extends SubsystemBase {
 
     private MotorControllerGroup leftMotors;
     private MotorControllerGroup rightMotors;
@@ -38,6 +46,11 @@ public class Drivetrain extends SubsystemBase {
     private CANSparkMax rightSlave;
     private CANSparkMax rightMaster;
     private final DifferentialDrive differentialDrive;
+
+    // Odometry class for tracking robot pose
+    private final DifferentialDriveOdometry m_odometry;
+    private RelativeEncoder m_leftEncoder, m_rightEncoder;
+    private final WPI_PigeonIMU m_gyro;
 
     /**
     *
@@ -73,19 +86,87 @@ public class Drivetrain extends SubsystemBase {
         leftMotors = new MotorControllerGroup(leftMaster, leftSlave);
         rightMotors = new MotorControllerGroup(rightMaster, rightSlave);
 
-        //differentialDrive = new DifferentialDrive(leftMaster, rightMaster);
+        // differentialDrive = new DifferentialDrive(leftMaster, rightMaster);
         differentialDrive = new DifferentialDrive(leftMotors, rightMotors);
 
-        WPI_TalonSRX talon = new WPI_TalonSRX(Constants.IndexerConstants.IndexerMotorOneId); 
-        WPI_PigeonIMU gyro = new WPI_PigeonIMU(talon); // Pigeon uses the talon created above
+        WPI_TalonSRX talon = new WPI_TalonSRX(Constants.IndexerConstants.IndexerMotorOneId);
+        m_gyro = new WPI_PigeonIMU(talon); // Pigeon uses the talon created above
 
+        m_leftEncoder = leftMaster.getEncoder();
+        m_rightEncoder = rightMaster.getEncoder();
+        m_leftEncoder.setPositionConversionFactor(TrajectoryConstants.kEncoderDistancePerPulse);
+        m_rightEncoder.setPositionConversionFactor(TrajectoryConstants.kEncoderDistancePerPulse);
+        m_leftEncoder.setVelocityConversionFactor(TrajectoryConstants.kEncoderDistancePerPulse);
+        m_rightEncoder.setVelocityConversionFactor(TrajectoryConstants.kEncoderDistancePerPulse);
+
+        resetEncoders();
+        m_odometry = new DifferentialDriveOdometry(m_gyro.getRotation2d());
+    }
+
+    /**
+     * Returns the current wheel speeds of the robot.
+     * 
+     * @param <DifferentialDriveWheelSpeeds>
+     *
+     * @return The current wheel speeds.
+     */
+    public DifferentialDriveWheelSpeeds getWheelSpeeds() {
+        return new DifferentialDriveWheelSpeeds(m_leftEncoder.getVelocity(), m_rightEncoder.getVelocity());
+    }
+
+    /**
+     * Returns the heading of the robot.
+     *
+     * @return the robot's heading in degrees, from -180 to 180
+     */
+    public double getHeading() {
+        return m_gyro.getRotation2d().getDegrees();
+    }
+
+    /**
+     * Returns the currently-estimated pose of the robot.
+     *
+     * @return The pose.
+     */
+    public Pose2d getPose() {
+        return m_odometry.getPoseMeters();
     }
 
     @Override
     public void periodic() {
         // This method will be called once per scheduler run
-
+        // Update the odometry in the periodic block
+        m_odometry.update(
+                m_gyro.getRotation2d(), m_leftEncoder.getPosition(), m_rightEncoder.getPosition());
     }
+
+      /**
+   * Controls the left and right sides of the drive directly with voltages.
+   *
+   * @param leftVolts the commanded left output
+   * @param rightVolts the commanded right output
+   */
+  public void tankDriveVolts(double leftVolts, double rightVolts) {
+    leftMotors.setVoltage(leftVolts);
+    rightMotors.setVoltage(rightVolts);
+    differentialDrive.feed();
+  }
+
+    /**
+   * Resets the odometry to the specified pose.
+   *
+   * @param pose The pose to which to set the odometry.
+   */
+  public void resetOdometry(Pose2d pose) {
+    resetEncoders();
+    m_odometry.resetPosition(pose, m_gyro.getRotation2d());
+  }
+
+    /** Resets the drive encoders to currently read a position of 0. */
+    public void resetEncoders() {
+        m_leftEncoder.setPosition(0);
+        m_rightEncoder.setPosition(0);
+      }
 
     @Override
     public void simulationPeriodic() {
@@ -96,6 +177,7 @@ public class Drivetrain extends SubsystemBase {
     public void arcadeDrive(final double speed, final double rotation) {
         differentialDrive.arcadeDrive(speed, rotation);
     }
+
     public void tankDrive(final double leftSpeed, final double rightSpeed) {
         differentialDrive.tankDrive(leftSpeed, rightSpeed);
     }

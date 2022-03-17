@@ -99,7 +99,7 @@ public class AimAndShoot extends CommandBase {
         double distanceFromLimelightToGoalInches = (goalHeightInches - limelightHeightInches) / Math.tan(angleToGoalRadians);
  
         // rpm = 3000rpm at 9 feet. Add 93.75 for ever foot beyond 9 feet
-        double rpm = ((distanceFromLimelightToGoalInches - 108) / 12 * 93.75) + 3000;
+        double rpm = ((distanceFromLimelightToGoalInches - 108) / 12 * 93.75) + 2600;
 
         SmartDashboard.putNumber("Caluclated Distance", distanceFromLimelightToGoalInches);
         SmartDashboard.putNumber("Calculated RPM", rpm);

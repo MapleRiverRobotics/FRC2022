@@ -83,4 +83,23 @@ public final class Constants {
     public static final class IndexerConstants {
         public static final int IndexerMotorOneId = 10;
     }
+
+    public static final class TrajectoryConstants {
+        public static final double ksVolts = 0.21683; //0.22;
+        public static final double kvVoltSecondsPerMeter = 2.6913; //1.98;
+        public static final double kaVoltSecondsSquaredPerMeter = 0.15008; //0.2;
+        public static final double kPDriveVel = .0000002; //4.0239; //8.5;
+        public static final double kTrackWidthMeters =  0.69;
+        public static final double kMaxSpeedMetersPerSecond = 1;
+        public static final double kMaxAccelerationMetersPerSecondSquared = 1;
+        // Reasonable baseline values for a RAMSETE follower in units of meters and seconds
+        public static final double kRamseteB = 2;
+        public static final double kRamseteZeta = 0.7;
+
+        public static final double kGearRatio = 10.71;
+        public static final double kWheelDiameterMeters = 0.1524;
+        public static final double kWheelCircumfrence = Math.PI * kWheelDiameterMeters;
+        public static final double kEncoderDistancePerPulse = kWheelCircumfrence / kGearRatio;
+
+    }
 }
