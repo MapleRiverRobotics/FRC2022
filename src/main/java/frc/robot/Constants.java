@@ -96,6 +96,7 @@ public final class Constants {
         public static final double kRamseteB = 2;
         public static final double kRamseteZeta = 0.7;
 
+        //public static final double kEncoderPulsesPerREvolution = 42;
         public static final double kGearRatio = 10.71;
         public static final double kWheelDiameterMeters = 0.1524;
         public static final double kWheelCircumfrence = Math.PI * kWheelDiameterMeters;
