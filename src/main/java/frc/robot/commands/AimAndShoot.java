@@ -79,7 +79,7 @@ public class AimAndShoot extends CommandBase {
             double rpm = GetShooterRpm();
             m_shooter.runShooterAtRpm(rpm);
             if (m_shooter.isWheelUpToSpeed(rpm)) {
-                Timer.delay(0.5);
+                Timer.delay(0.25);
                 m_indexer.Start(-1);
             }
         }

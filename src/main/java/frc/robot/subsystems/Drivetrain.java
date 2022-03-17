@@ -16,8 +16,8 @@ import frc.robot.Constants;
 import frc.robot.Constants.DriveConstants;
 import frc.robot.Constants.TrajectoryConstants;
 import edu.wpi.first.math.geometry.Pose2d;
-import edu.wpi.first.math.kinematics.DifferentialDriveKinematics;
 import edu.wpi.first.math.kinematics.DifferentialDriveOdometry;
+import edu.wpi.first.wpilibj.Timer;
 import edu.wpi.first.wpilibj.drive.DifferentialDrive;
 import edu.wpi.first.wpilibj.motorcontrol.MotorControllerGroup;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
@@ -28,8 +28,6 @@ import com.revrobotics.CANSparkMaxLowLevel.MotorType;
 import edu.wpi.first.math.kinematics.DifferentialDriveWheelSpeeds;
 
 
-import com.ctre.phoenix.motorcontrol.ControlMode;
-import com.ctre.phoenix.motorcontrol.FeedbackDevice;
 import com.ctre.phoenix.motorcontrol.can.WPI_TalonSRX;
 import com.ctre.phoenix.sensors.WPI_PigeonIMU;
 
@@ -37,7 +35,7 @@ import com.ctre.phoenix.sensors.WPI_PigeonIMU;
  * @param <Encoder>
  *
  */
-public class Drivetrain<Encoder> extends SubsystemBase {
+public class Drivetrain extends SubsystemBase {
 
     private MotorControllerGroup leftMotors;
     private MotorControllerGroup rightMotors;
@@ -98,11 +96,9 @@ public class Drivetrain<Encoder> extends SubsystemBase {
         resetEncoders();
         m_odometry = new DifferentialDriveOdometry(m_gyro.getRotation2d());
 
-        try {
-            // ensure the CAN messages are recieved by controllers prior to burning them 
-            Thread.sleep(200);
-        } catch (InterruptedException e) {
-        }
+        // ensure the CAN messages are recieved by controllers prior to burning them 
+        Timer.delay(.2);
+
         rightMaster.burnFlash();
         rightSlave.burnFlash();
         leftMaster.burnFlash();

@@ -4,19 +4,24 @@
 
 package frc.robot.commands;
 
+import edu.wpi.first.wpilibj.Timer;
 import edu.wpi.first.wpilibj2.command.CommandBase;
+import frc.robot.subsystems.Indexer;
 import frc.robot.subsystems.Shooter;
 
 public class Shoot extends CommandBase {
   /** Creates a new ShooterShoot. */
   private final Shooter m_shooter;
-  public final double m_speed;
+  private final Indexer m_indexer;
+  public final double m_rpm;
 
-  public Shoot(Shooter subsystem, double speed) {
+  public Shoot(Shooter subsystem, Indexer indexer, double rpm) {
     // Use addRequirements() here to declare subsystem dependencies.
-    m_speed = speed;
+    m_rpm = rpm;
     m_shooter = subsystem;
+    m_indexer = indexer;
     addRequirements(m_shooter);
+    addRequirements(m_indexer);
   }
 
   // Called when the command is initially scheduled.
@@ -28,7 +33,11 @@ public class Shoot extends CommandBase {
   @Override
   public void execute() {
 
-    m_shooter.Start(m_speed);
+    m_shooter.runShooterAtRpm(m_rpm);
+    if (m_shooter.isWheelUpToSpeed(m_rpm)) {
+        Timer.delay(0.125);
+        m_indexer.Start(-1);
+    }
   }
 
   // Called once the command ends or is interrupted.

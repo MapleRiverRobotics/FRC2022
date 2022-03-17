@@ -13,6 +13,7 @@ import com.revrobotics.CANSparkMaxLowLevel.MotorType;
 import edu.wpi.first.wpilibj.DoubleSolenoid;
 import edu.wpi.first.wpilibj.PneumaticsModuleType;
 import edu.wpi.first.wpilibj.Servo;
+import edu.wpi.first.wpilibj.Timer;
 import edu.wpi.first.wpilibj.DoubleSolenoid.Value;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
@@ -114,18 +115,29 @@ public class Climber extends SubsystemBase {
     thirdBarLeftLimitSwitch = new DigitalInput(ClimberConstants.thirdBarLeftLimitSwitch);
   }
 
+  public boolean IsBrakeEngaged() {
+    double rightAngle = brakeServoRight.getAngle();
+    double leftAngle = brakeServoLeft.getAngle();
+    if (rightAngle > 60 && rightAngle < 120 ||
+        leftAngle > 60 && leftAngle < 120) {
+        return true;
+    }
+
+    return false;
+  }
+
   public void EngageBrake() {
     brakeServoRight.setAngle(90);
-    SmartDashboard.putNumber("Brake Servo Angle", brakeServoRight.getAngle());
+    SmartDashboard.putNumber("Brake Right Servo Angle", brakeServoRight.getAngle());
     brakeServoLeft.setAngle(90);
-    SmartDashboard.putNumber("Brake Servo Angle", brakeServoLeft.getAngle());
+    SmartDashboard.putNumber("Brake Left Servo Angle", brakeServoLeft.getAngle());
   }
 
   public void DisengageBrake() {
     brakeServoRight.setAngle(180);
-    SmartDashboard.putNumber("Brake Servo Angle", brakeServoRight.getAngle());
+    SmartDashboard.putNumber("Brake Right Servo Angle", brakeServoRight.getAngle());
     brakeServoLeft.setAngle(0);
-    SmartDashboard.putNumber("Brake Servo Angle", brakeServoLeft.getAngle());
+    SmartDashboard.putNumber("Brake Left Servo Angle", brakeServoLeft.getAngle());
   }
 
   public void MediumTraverseRelease() {
@@ -212,6 +224,13 @@ public class Climber extends SubsystemBase {
 
   public void Start(int direction, Arm arm) {
     double speed = .5 * direction;
+
+    // Safety mechanism to ensure we don't strip the brakes while going the wrong direction
+    if (direction > 0 && IsBrakeEngaged()) {
+      DisengageBrake();
+      Timer.delay(.5);
+    }
+
     if (arm == Arm.Left) {
       m_motorLeft.set(speed);
     } else if (arm == Arm.Right) {

@@ -7,9 +7,9 @@
 
 package frc.robot.commands;
 
+import edu.wpi.first.wpilibj.Timer;
 import edu.wpi.first.wpilibj2.command.CommandBase;
 import frc.robot.Constants.ClimberConstants.Arm;
-import frc.robot.Constants.ClimberConstants;
 import frc.robot.subsystems.Climber;
 
 public class AutoClimb extends CommandBase {
@@ -67,12 +67,13 @@ public class AutoClimb extends CommandBase {
         barOneFinished = true;
         barOneGrabbed = true;
         m_climber.MediumTraverseGrab();
-        // delay for 250 millisecond
-        try {
-          Thread.sleep(125);
-        } catch (InterruptedException e) {
-          e.printStackTrace();
-        }
+        // delay to allow pneumatics to move
+        Timer.delay(.125);
+        // try {
+        //   Thread.sleep(125);
+        // } catch (InterruptedException e) {
+        //   e.printStackTrace();
+        // }
         m_climber.Stop(Arm.Both);
       } else {
         m_climber.Start(-1, Arm.Both);
@@ -85,12 +86,13 @@ public class AutoClimb extends CommandBase {
       // Check and grab bar 2
       if (m_climber.IsSecondBarLeftLimitSwitchPressed() && m_climber.IsSecondBarRightLimitSwitchPressed()) {
         m_climber.HighGrab();
-        // delay for 250 millisecond
-        try {
-          Thread.sleep(125);
-        } catch (InterruptedException e) {
-          e.printStackTrace();
-        }
+        // delay to allow pneumatics to move
+        Timer.delay(.125);
+        // try {
+        //   Thread.sleep(125);
+        // } catch (InterruptedException e) {
+        //   e.printStackTrace();
+        // }
         barTwoGrabbed = true;
         m_climber.Stop(Arm.Both);
       } else {
@@ -100,18 +102,21 @@ public class AutoClimb extends CommandBase {
   }
 
   public void climbThirdBar() {
-    // Release first bar
+    // Release first bar by roatating arms against it to take pressure off of pneumatic cylinder rods
     if (barOneGrabbed == true) {
       if (m_climber.IsFirstBarLeftLimitSwitchPressed() || m_climber.IsFirstBarRightLimitSwitchPressed()) {
         m_climber.MediumTraverseRelease();
-        m_climber.Stop(Arm.Both);
         barOneGrabbed = false;
-        // delay for 250 millisecond
-        try {
-          Thread.sleep(250);
-        } catch (InterruptedException e) {
-          e.printStackTrace();
-        }
+        // delay to allow pneumatics to move
+        Timer.delay(.125);
+        m_climber.Stop(Arm.Both);
+        // delay to allow pneumatics to move
+        Timer.delay(.125);
+        // try {
+        //   Thread.sleep(250);
+        // } catch (InterruptedException e) {
+        //   e.printStackTrace();
+        // }
       } else {
         m_climber.Start(-1, Arm.Both);
       }
@@ -119,12 +124,13 @@ public class AutoClimb extends CommandBase {
     } else {
       if (m_climber.IsThirdBarLeftLimitSwitchPressed() && m_climber.IsThirdBarRightLimitSwitchPressed()) {
         m_climber.MediumTraverseGrab();
-        // delay for 250 millisecond
-        try {
-          Thread.sleep(125);
-        } catch (InterruptedException e) {
-          e.printStackTrace();
-        }
+        // delay to allow pneumatics to move
+        Timer.delay(.125);
+        // try {
+        //   Thread.sleep(125);
+        // } catch (InterruptedException e) {
+        //   e.printStackTrace();
+        // }
         m_climber.Stop(Arm.Both);
         m_climber.EngageBrake();
       } else {

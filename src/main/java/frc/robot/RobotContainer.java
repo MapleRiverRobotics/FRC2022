@@ -68,7 +68,7 @@ public class RobotContainer {
   private final Command m_autoDriveForward = new AutonomousDriveCommand(m_drivetrain, 1);
   private final Command m_autoDriveReverse = new AutonomousDriveCommand(m_drivetrain, -1);
   private final Command m_autoShootAndBackup = new SequentialCommandGroup(
-      new Shoot(m_shooter, 40),
+      new Shoot(m_shooter, m_indexer, 1500),
       new AutonomousDriveCommand(m_drivetrain, -1));
 
   public static final DifferentialDriveKinematics m_driveKinematics = new DifferentialDriveKinematics(
@@ -128,18 +128,18 @@ public class RobotContainer {
   private void configureButtonBindings() {
     // Create Shooter buttons
     final JoystickButton shooterShootButtonOne = new JoystickButton(driveJoystick, 1);
-    shooterShootButtonOne.whileHeld(new Shoot(m_shooter, 75));
+    shooterShootButtonOne.whileHeld(new Shoot(m_shooter, m_indexer, 1500));
     final JoystickButton shooterShootButtonTwo = new JoystickButton(driveJoystick, 12);
-    shooterShootButtonTwo.whileActiveContinuous(new Shoot(m_shooter, 60));
+    shooterShootButtonTwo.whileActiveContinuous(new Shoot(m_shooter, m_indexer, 2000));
     final JoystickButton shooterShootButtonThree = new JoystickButton(driveJoystick, 11);
-    shooterShootButtonThree.whileActiveContinuous(new Shoot(m_shooter, 40));
+    shooterShootButtonThree.whileActiveContinuous(new Shoot(m_shooter, m_indexer, 2500));
 
     final JoystickButton shooterAimAndShoot = new JoystickButton(driveJoystick, 2);
     shooterAimAndShoot.whileActiveContinuous(new AimAndShoot(m_shooter, m_drivetrain, m_indexer));
 
     // Intake Triggers
-    Trigger intakeForward = new Trigger(
-        () -> operatorJoystick.getPOV() > 315 || (operatorJoystick.getPOV() >= 0 && operatorJoystick.getPOV() < 45));
+    Trigger intakeForward = new Trigger(() -> operatorJoystick.getPOV() > 315 || 
+                                             (operatorJoystick.getPOV() >= 0 && operatorJoystick.getPOV() < 45));
     Trigger intakeReverse = new Trigger(() -> operatorJoystick.getPOV() > 135 && operatorJoystick.getPOV() < 215);
     intakeForward.whileActiveContinuous(new IntakeRun(m_intake, -1));
     intakeReverse.whileActiveContinuous(new IntakeRun(m_intake, 1));
