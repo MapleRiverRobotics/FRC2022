@@ -12,6 +12,7 @@
 
 package frc.robot;
 
+import frc.robot.Constants.IntakeConstants;
 import frc.robot.Constants.OIConstants;
 import frc.robot.Constants.TrajectoryConstants;
 import frc.robot.Constants.ClimberConstants.Arm;
@@ -77,14 +78,6 @@ public class RobotContainer {
   // A chooser for autonomous commands
   SendableChooser<Command> m_chooser = new SendableChooser<>();
 
-  public Drivetrain getDriveTrain() {
-    return m_drivetrain;
-  };
-
-  public Shooter getShooter() {
-    return null; // m_shooter; //TODO - Restore this line of code
-  };
-
   // Joysticks
   private final Joystick driveJoystick = new Joystick(OIConstants.DriverJoystickId);
   private final XboxController operatorJoystick = new XboxController(OIConstants.OperatorJoystickId);
@@ -144,11 +137,9 @@ public class RobotContainer {
     intakeForward.whileActiveContinuous(new IntakeRun(m_intake, -1));
     intakeReverse.whileActiveContinuous(new IntakeRun(m_intake, 1));
 
-    final JoystickButton intakeUpButton = new JoystickButton(operatorJoystick,
-        Constants.IntakeConstants.IntakeUpButton);
+    final JoystickButton intakeUpButton = new JoystickButton(operatorJoystick, IntakeConstants.IntakeUpButton);
     intakeUpButton.whenPressed(new IntakeLift(m_intake, 1));
-    final JoystickButton intakeDownButton = new JoystickButton(operatorJoystick,
-        Constants.IntakeConstants.IntakeDownButton);
+    final JoystickButton intakeDownButton = new JoystickButton(operatorJoystick, IntakeConstants.IntakeDownButton);
     intakeDownButton.whenPressed(new IntakeLift(m_intake, 0));
 
     // Indexer Triggers
@@ -179,12 +170,9 @@ public class RobotContainer {
     final JoystickButton release3Buton = new JoystickButton(operatorJoystick, 1);
 
     // Grab
-    // releaseButton.negate().and(grab1Button).whileActiveOnce(new Grab(m_climber,
-    // 1));
-    // releaseButton.negate().and(grab2Button).whileActiveOnce(new Grab(m_climber,
-    // 2));
-    // releaseButton.negate().and(grab3Button).whileActiveOnce(new Grab(m_climber,
-    // 3));
+    // releaseButton.negate().and(grab1Button).whileActiveOnce(new Grab(m_climber, 1));
+    // releaseButton.negate().and(grab2Button).whileActiveOnce(new Grab(m_climber, 2));
+    // releaseButton.negate().and(grab3Button).whileActiveOnce(new Grab(m_climber, 3));
     releaseButton.negate().and(grab1Button).whileActiveContinuous(new AutoClimb(m_climber, 1));
     releaseButton.negate().and(grab2Button).whileActiveContinuous(new AutoClimb(m_climber, 2));
     releaseButton.negate().and(grab3Button).whileActiveContinuous(new AutoClimb(m_climber, 3));

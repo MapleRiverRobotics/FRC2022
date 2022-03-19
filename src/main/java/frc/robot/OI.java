@@ -5,7 +5,6 @@
 package frc.robot;
 
 import edu.wpi.first.wpilibj.Joystick;
-import edu.wpi.first.wpilibj2.command.button.JoystickButton;
 import frc.robot.Constants.OIConstants;
 
 
@@ -15,7 +14,7 @@ import frc.robot.Constants.OIConstants;
 public class OI {
 
     public Joystick joystickDrive = new Joystick(OIConstants.DriverJoystickId);
-    public JoystickButton shooterShootButton;
+    // public JoystickButton shooterShootButton;
     // public JoystickButton indexingBeltsForwardButton;
     // public JoystickButton liftingBeltsUpButton;
     // public JoystickButton liftingBeltsDownButton;
@@ -41,7 +40,7 @@ public class OI {
     // public JoystickButton intakeLiftDownButton;
 
     public OI() {
-        if (joystickDrive != null) {
+        //if (joystickDrive != null) {
             //shooterShootButton = new JoystickButton(joystickDrive, 1);
             //shooterShootButton.whileHeld(new Shoot(RobotContainer.getInstance().getShooter()));
             // shooter100Button = new JoystickButton(joystickDrive, 12);
@@ -77,9 +76,9 @@ public class OI {
             // intakeIn = new JoystickButton(joystickDrive, 8);
             // intakeIn.whileHeld(new IntakeIn());
 
-        }
+        //}
 
-        if (joystickOperator != null) {
+        //if (joystickOperator != null) {
             // intakeInButton = new JoystickButton(joystickOperator, 6); // RB button
             // intakeInButton.whileHeld(new IntakeIn());
             // liftingBeltsUpOperatorButton = new JoystickButton(joystickOperator, 2); // B
@@ -92,16 +91,16 @@ public class OI {
             // intakeLiftUpButton.whileHeld(new IntakePositionCommand(1));
             // intakeLiftDownButton = new JoystickButton(joystickOperator, 1); // A button
             // intakeLiftDownButton.whileHeld(new IntakePositionCommand(-0.8));
-        }
+        //}
     }
 
-    public Joystick getJoystickDrive() {
-        return joystickDrive;
-    }
+    // public Joystick getJoystickDrive() {
+    //     return joystickDrive;
+    // }
 
-    public Joystick getJoystickOperator() {
-        return joystickOperator;
-    }
+    // public Joystick getJoystickOperator() {
+    //     return joystickOperator;
+    // }
 
     public double getJoystickDriveForwardSpeed() {
         if (joystickDrive != null) {

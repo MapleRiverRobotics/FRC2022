@@ -23,27 +23,27 @@ import edu.wpi.first.wpilibj.DigitalInput;
 
 public class Climber extends SubsystemBase {
 
-  private CANSparkMax m_motorLeft;
-  private CANSparkMax m_motorRight;
-  public SparkMaxPIDController PidControllerLeft;
-  public SparkMaxPIDController PidControllerRight;
-  private RelativeEncoder m_encoderLeft;
+  private final CANSparkMax m_motorLeft;
+  private final CANSparkMax m_motorRight;
+  private final SparkMaxPIDController PidControllerLeft;
+  private final SparkMaxPIDController PidControllerRight;
+  private final RelativeEncoder m_encoderLeft;
   // private RelativeEncoder m_encoderRight;
-  public double kP, kI, kD, kIz, kFF, kMaxOutput, kMinOutput;
+  private double kP, kI, kD, kIz, kFF, kMaxOutput, kMinOutput;
   private double rotations;
 
   private final double gearboxGearRatio = 48.0;
   private final double chainGearRatio = 4.0;
   private final double gearRatio = gearboxGearRatio * chainGearRatio;
 
-  DoubleSolenoid mediumTraverseValve = new DoubleSolenoid(PneumaticsModuleType.CTREPCM,
+  private final DoubleSolenoid mediumTraverseValve = new DoubleSolenoid(PneumaticsModuleType.CTREPCM,
       ClimberConstants.MediumTraverseGrabId, ClimberConstants.MediumTraverseReleaseId);
-  DoubleSolenoid highValve = new DoubleSolenoid(PneumaticsModuleType.CTREPCM, ClimberConstants.HighValveGrabId,
+  private final DoubleSolenoid highValve = new DoubleSolenoid(PneumaticsModuleType.CTREPCM, ClimberConstants.HighValveGrabId,
       ClimberConstants.HighValveReleaseId);
-  Servo brakeServoRight = new Servo(ClimberConstants.BreakServoOneId);
-  Servo brakeServoLeft = new Servo(ClimberConstants.BreakServoTwoId);
+  private final Servo brakeServoRight = new Servo(ClimberConstants.BreakServoOneId);
+  private final Servo brakeServoLeft = new Servo(ClimberConstants.BreakServoTwoId);
 
-  public DigitalInput firstBarRightLimitSwitch, secondBarRightLimitSwitch, thirdBarRightLimitSwitch,
+  private final DigitalInput firstBarRightLimitSwitch, secondBarRightLimitSwitch, thirdBarRightLimitSwitch,
       firstBarLeftLimitSwitch, secondBarLeftLimitSwitch, thirdBarLeftLimitSwitch;
 
   public Climber() {
@@ -118,12 +118,14 @@ public class Climber extends SubsystemBase {
   public boolean IsBrakeEngaged() {
     double rightAngle = brakeServoRight.getAngle();
     double leftAngle = brakeServoLeft.getAngle();
+    boolean isEngaged = false;
     if (rightAngle > 60 && rightAngle < 120 ||
         leftAngle > 60 && leftAngle < 120) {
-        return true;
+          isEngaged = true;
     }
 
-    return false;
+    SmartDashboard.putBoolean("Brake engaged:", isEngaged);
+    return isEngaged;
   }
 
   public void EngageBrake() {
