@@ -42,10 +42,10 @@ public class Intake extends SubsystemBase {
   }
 
   public void up(){
-    intakeLift.set(Value.kReverse);
+    intakeLift.set(Value.kForward);
   }
 
   public void down(){
-    intakeLift.set(Value.kForward);
+    intakeLift.set(Value.kReverse);
   }
 }

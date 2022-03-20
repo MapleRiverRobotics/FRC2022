@@ -22,9 +22,14 @@ import edu.wpi.first.wpilibj.smartdashboard.SendableChooser;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.math.trajectory.TrajectoryConfig;
 import edu.wpi.first.wpilibj2.command.Command;
+import edu.wpi.first.wpilibj2.command.InstantCommand;
+import edu.wpi.first.wpilibj2.command.ParallelCommandGroup;
+import edu.wpi.first.wpilibj2.command.ParallelDeadlineGroup;
 import edu.wpi.first.wpilibj2.command.RamseteCommand;
 import edu.wpi.first.wpilibj2.command.SequentialCommandGroup;
 
+import java.io.IOException;
+import java.nio.file.Path;
 import java.util.List;
 
 import edu.wpi.first.math.controller.PIDController;
@@ -36,7 +41,10 @@ import edu.wpi.first.math.geometry.Translation2d;
 import edu.wpi.first.math.kinematics.DifferentialDriveKinematics;
 import edu.wpi.first.math.trajectory.Trajectory;
 import edu.wpi.first.math.trajectory.TrajectoryGenerator;
+import edu.wpi.first.math.trajectory.TrajectoryUtil;
 import edu.wpi.first.math.trajectory.constraint.DifferentialDriveVoltageConstraint;
+import edu.wpi.first.wpilibj.DriverStation;
+import edu.wpi.first.wpilibj.Filesystem;
 import edu.wpi.first.wpilibj.Joystick;
 import edu.wpi.first.wpilibj.XboxController;
 import edu.wpi.first.wpilibj2.command.button.JoystickButton;
@@ -131,8 +139,8 @@ public class RobotContainer {
     shooterAimAndShoot.whileActiveContinuous(new AimAndShoot(m_shooter, m_drivetrain, m_indexer));
 
     // Intake Triggers
-    Trigger intakeForward = new Trigger(() -> operatorJoystick.getPOV() > 315 || 
-                                             (operatorJoystick.getPOV() >= 0 && operatorJoystick.getPOV() < 45));
+    Trigger intakeForward = new Trigger(() -> operatorJoystick.getPOV() > 315 ||
+        (operatorJoystick.getPOV() >= 0 && operatorJoystick.getPOV() < 45));
     Trigger intakeReverse = new Trigger(() -> operatorJoystick.getPOV() > 135 && operatorJoystick.getPOV() < 215);
     intakeForward.whileActiveContinuous(new IntakeRun(m_intake, -1));
     intakeReverse.whileActiveContinuous(new IntakeRun(m_intake, 1));
@@ -170,9 +178,12 @@ public class RobotContainer {
     final JoystickButton release3Buton = new JoystickButton(operatorJoystick, 1);
 
     // Grab
-    // releaseButton.negate().and(grab1Button).whileActiveOnce(new Grab(m_climber, 1));
-    // releaseButton.negate().and(grab2Button).whileActiveOnce(new Grab(m_climber, 2));
-    // releaseButton.negate().and(grab3Button).whileActiveOnce(new Grab(m_climber, 3));
+    // releaseButton.negate().and(grab1Button).whileActiveOnce(new Grab(m_climber,
+    // 1));
+    // releaseButton.negate().and(grab2Button).whileActiveOnce(new Grab(m_climber,
+    // 2));
+    // releaseButton.negate().and(grab3Button).whileActiveOnce(new Grab(m_climber,
+    // 3));
     releaseButton.negate().and(grab1Button).whileActiveContinuous(new AutoClimb(m_climber, 1));
     releaseButton.negate().and(grab2Button).whileActiveContinuous(new AutoClimb(m_climber, 2));
     releaseButton.negate().and(grab3Button).whileActiveContinuous(new AutoClimb(m_climber, 3));
@@ -199,66 +210,51 @@ public class RobotContainer {
   // return m_chooser.getSelected();
   // }
 
-  /**
-   * Use this to pass the autonomous command to the main {@link Robot} class.
-   * 
-   * @param <TrajectoryConfig>
-   *
-   * @return the command to run in autonomous
-   */
+  private Trajectory trajectory = new Trajectory();
+
+  public void loadTrajectories() {
+    // String trajectoryJSON = "paths/DriveToSideCargo.wpilib.json";
+
+    // try {
+    // Path trajectoryPath =
+    // Filesystem.getDeployDirectory().toPath().resolve(trajectoryJSON);
+    // trajectory = TrajectoryUtil.fromPathweaverJson(trajectoryPath);
+    // } catch (IOException ex) {
+    // DriverStation.reportError("Unable to open trajectory: " + trajectoryJSON,
+    // ex.getStackTrace());
+    // }
+  }
+
+
+  public Command getAutonomousCommand2() {
+    return new DriveRotateInPlace(m_drivetrain, 180);
+  }
+
   public Command getAutonomousCommand() {
+    Trajectory t1 = TrajectoryHelper.loadTrajectoryFromFile("DriveToSideCargo");
+    Trajectory t2 = TrajectoryHelper.loadTrajectoryFromFile("reverse");
+    Trajectory t3 = TrajectoryHelper.loadTrajectoryFromFile("TurnAroundBySideCargo");
 
-    // Create a voltage constraint to ensure we don't accelerate too fast
-    var autoVoltageConstraint = new DifferentialDriveVoltageConstraint(
-        new SimpleMotorFeedforward(
-            TrajectoryConstants.ksVolts,
-            TrajectoryConstants.kvVoltSecondsPerMeter,
-            TrajectoryConstants.kaVoltSecondsSquaredPerMeter),
-        m_driveKinematics,
-        10);
+    Command autoCommand = new SequentialCommandGroup(
+        new InstantCommand(() -> {
+          m_drivetrain.resetOdometry(t1.getInitialPose());
+        }),
+        // new InstantCommand(() -> {
+        //   m_intake.up();
+        // }),
+        new IntakeLift(m_intake, 0).withTimeout(2),
+        new ParallelDeadlineGroup(
+//          TrajectoryHelper.createCommandForTrajectory(t1, false, m_drivetrain).withTimeout(50).withName("Forward"),
+          TrajectoryHelper.getDriveStraightCommand(m_drivetrain, 36).withTimeout(5).withName("Forward"),
+          new IntakeRun(m_intake, 1)
+        ),
+        TrajectoryHelper.getDriveStraightCommand(m_drivetrain, -36).withTimeout(5).withName("Reverse"),
+        new DriveRotateInPlace(m_drivetrain, 180).withTimeout(5),
+        new Shoot(m_shooter, m_indexer, 2000).withTimeout(5));
 
-    // Create config for trajectory
-    TrajectoryConfig config = new TrajectoryConfig(
-        TrajectoryConstants.kMaxSpeedMetersPerSecond,
-        TrajectoryConstants.kMaxAccelerationMetersPerSecondSquared)
-            // Add kinematics to ensure max speed is actually obeyed
-            .setKinematics(m_driveKinematics)
-            // Apply the voltage constraint
-            .addConstraint(autoVoltageConstraint);
-
-    // An example trajectory to follow. All units in meters.
-    Trajectory exampleTrajectory = TrajectoryGenerator.generateTrajectory(
-        // Start at the origin facing the +X direction
-        new Pose2d(0, 0, new Rotation2d(0)),
-        // Pass through these two interior waypoints, making an 's' curve path
-   //     List.of(new Translation2d(1, 1), new Translation2d(2, -1)),
-         List.of(new Translation2d(1, 0), new Translation2d(2, 0)),
-        // End 3 meters straight ahead of where we started, facing forward
-        new Pose2d(3, 0, new Rotation2d(0)),
-        // Pass config
-        config);
-
-    RamseteCommand ramseteCommand = new RamseteCommand(
-        exampleTrajectory,
-        m_drivetrain::getPose,
-        new RamseteController(TrajectoryConstants.kRamseteB, TrajectoryConstants.kRamseteZeta),
-        new SimpleMotorFeedforward(
-            TrajectoryConstants.ksVolts,
-            TrajectoryConstants.kvVoltSecondsPerMeter,
-            TrajectoryConstants.kaVoltSecondsSquaredPerMeter),
-        m_driveKinematics,
-        m_drivetrain::getWheelSpeeds,
-        new PIDController(TrajectoryConstants.kPDriveVel, 0, 0),
-        new PIDController(TrajectoryConstants.kPDriveVel, 0, 0),
-        // RamseteCommand passes volts to the callback
-        m_drivetrain::tankDriveVolts,
-        m_drivetrain);
-
-    // Reset odometry to the starting pose of the trajectory.
-    m_drivetrain.resetOdometry(exampleTrajectory.getInitialPose());
-
-    // Run path following command, then stop at the end.
-    return ramseteCommand.andThen(() -> m_drivetrain.tankDriveVolts(0, 0));
+    return autoCommand;
+    //trajectory = TrajectoryHelper.loadTrajectoryFromFile("DriveToSideCargo");
+    //return TrajectoryHelper.createCommandForTrajectory(trajectory, true, m_drivetrain);
   }
 
 }

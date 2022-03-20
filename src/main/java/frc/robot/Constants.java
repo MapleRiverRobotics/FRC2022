@@ -75,8 +75,8 @@ public final class Constants {
         public static final int IntakeMotorOneId = 9;        
         public static final int IntakeDownValve = 0;
         public static final int IntakeUpValve = 1;
-        public static final int IntakeUpButton = 7;
-        public static final int IntakeDownButton = 8;
+        public static final int IntakeUpButton = 8;
+        public static final int IntakeDownButton = 7;
     }
 
     // Indexer constants

@@ -15,10 +15,10 @@ public class Shoot extends CommandBase {
   private final Indexer m_indexer;
   public final double m_rpm;
 
-  public Shoot(Shooter subsystem, Indexer indexer, double rpm) {
+  public Shoot(Shooter shooter, Indexer indexer, double rpm) {
     // Use addRequirements() here to declare subsystem dependencies.
     m_rpm = rpm;
-    m_shooter = subsystem;
+    m_shooter = shooter;
     m_indexer = indexer;
     addRequirements(m_shooter);
     addRequirements(m_indexer);
