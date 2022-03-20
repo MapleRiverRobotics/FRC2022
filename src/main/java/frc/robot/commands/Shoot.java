@@ -44,6 +44,7 @@ public class Shoot extends CommandBase {
   @Override
   public void end(boolean interrupted) {
     m_shooter.Stop();
+    m_indexer.Stop();
     ;
   }
 

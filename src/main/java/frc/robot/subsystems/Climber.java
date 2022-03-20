@@ -119,8 +119,7 @@ public class Climber extends SubsystemBase {
     double rightAngle = brakeServoRight.getAngle();
     double leftAngle = brakeServoLeft.getAngle();
     boolean isEngaged = false;
-    if (rightAngle > 60 && rightAngle < 120 ||
-        leftAngle > 60 && leftAngle < 120) {
+    if (rightAngle < 160 || leftAngle > 20) {
           isEngaged = true;
     }
 

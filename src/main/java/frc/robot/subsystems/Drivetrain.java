@@ -20,6 +20,7 @@ import edu.wpi.first.math.kinematics.DifferentialDriveOdometry;
 import edu.wpi.first.wpilibj.Timer;
 import edu.wpi.first.wpilibj.drive.DifferentialDrive;
 import edu.wpi.first.wpilibj.motorcontrol.MotorControllerGroup;
+import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
 import com.revrobotics.CANSparkMax;
 import com.revrobotics.RelativeEncoder;
@@ -57,24 +58,24 @@ public class Drivetrain extends SubsystemBase {
 
         rightMaster = new CANSparkMax(DriveConstants.RightMasterMotorId, MotorType.kBrushless);
         rightMaster.restoreFactoryDefaults();
-        rightMaster.setInverted(false);
+        rightMaster.setInverted(true);
         rightMaster.setIdleMode(IdleMode.kBrake);
 
         rightSlave = new CANSparkMax(DriveConstants.RightSlaveMototId, MotorType.kBrushless);
         rightSlave.restoreFactoryDefaults();
         rightSlave.follow(rightMaster);
-        rightSlave.setInverted(false);
+        rightSlave.setInverted(true);
         rightSlave.setIdleMode(IdleMode.kBrake);
 
         leftMaster = new CANSparkMax(DriveConstants.LeftMasterMotorId, MotorType.kBrushless);
         leftMaster.restoreFactoryDefaults();
-        leftMaster.setInverted(true);
+        leftMaster.setInverted(false);
         leftMaster.setIdleMode(IdleMode.kBrake);
 
         leftSlave = new CANSparkMax(DriveConstants.LeftSlaveMotorId, MotorType.kBrushless);
         leftSlave.restoreFactoryDefaults();
         leftSlave.follow(leftMaster);
-        leftSlave.setInverted(true);
+        leftSlave.setInverted(false);
         leftSlave.setIdleMode(IdleMode.kBrake);
 
         leftMotors = new MotorControllerGroup(leftMaster, leftSlave);
@@ -114,6 +115,8 @@ public class Drivetrain extends SubsystemBase {
      * @return The current wheel speeds.
      */
     public DifferentialDriveWheelSpeeds getWheelSpeeds() {
+        SmartDashboard.putNumber("Left Drive Velocity", m_leftEncoder.getVelocity());
+        SmartDashboard.putNumber("Right Drive Velocity", m_rightEncoder.getVelocity());
         return new DifferentialDriveWheelSpeeds(m_leftEncoder.getVelocity(), m_rightEncoder.getVelocity());
     }
 
@@ -123,7 +126,7 @@ public class Drivetrain extends SubsystemBase {
      * @return the robot's heading in degrees, from -180 to 180
      */
     public double getHeading() {
-        return m_gyro.getRotation2d().getDegrees();
+        return m_gyro.getRotation2d().getDegrees() * -1;
     }
 
     /**
@@ -137,6 +140,8 @@ public class Drivetrain extends SubsystemBase {
 
     @Override
     public void periodic() {
+        SmartDashboard.putNumber("Left Drive Position", m_leftEncoder.getPosition());
+        SmartDashboard.putNumber("Right Drive Position", m_rightEncoder.getPosition());
         // This method will be called once per scheduler run
         // Update the odometry in the periodic block
         m_odometry.update(
