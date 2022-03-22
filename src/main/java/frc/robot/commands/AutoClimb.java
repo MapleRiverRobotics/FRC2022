@@ -17,6 +17,7 @@ public class AutoClimb extends CommandBase {
   private final int m_barNumber;
   public boolean barOneFinished;
   public static boolean barOneGrabbed = false;
+  public static boolean barThreeGrabbed = false;
   public boolean barTwoFinished, barTwoGrabbed;
   public boolean barThreeFinished;
 
@@ -69,11 +70,6 @@ public class AutoClimb extends CommandBase {
         m_climber.MediumTraverseGrab();
         // delay to allow pneumatics to move
         Timer.delay(.125);
-        // try {
-        //   Thread.sleep(125);
-        // } catch (InterruptedException e) {
-        //   e.printStackTrace();
-        // }
         m_climber.Stop(Arm.Both);
       } else {
         m_climber.Start(-1, Arm.Both);
@@ -88,11 +84,6 @@ public class AutoClimb extends CommandBase {
         m_climber.HighGrab();
         // delay to allow pneumatics to move
         Timer.delay(.125);
-        // try {
-        //   Thread.sleep(125);
-        // } catch (InterruptedException e) {
-        //   e.printStackTrace();
-        // }
         barTwoGrabbed = true;
         m_climber.Stop(Arm.Both);
       } else {
@@ -102,6 +93,11 @@ public class AutoClimb extends CommandBase {
   }
 
   public void climbThirdBar() {
+    // if the third bar is grabbed, do nothing even though driver is still holding button
+    if (barThreeGrabbed) {
+      return;
+    }
+
     // Release first bar by roatating arms against it to take pressure off of pneumatic cylinder rods
     if (barOneGrabbed == true) {
       if (m_climber.IsFirstBarLeftLimitSwitchPressed() || m_climber.IsFirstBarRightLimitSwitchPressed()) {
@@ -112,25 +108,16 @@ public class AutoClimb extends CommandBase {
         m_climber.Stop(Arm.Both);
         // delay to allow pneumatics to move
         Timer.delay(.125);
-        // try {
-        //   Thread.sleep(250);
-        // } catch (InterruptedException e) {
-        //   e.printStackTrace();
-        // }
       } else {
         m_climber.Start(-1, Arm.Both);
       }
       // Swing to third bar
     } else {
       if (m_climber.IsThirdBarLeftLimitSwitchPressed() && m_climber.IsThirdBarRightLimitSwitchPressed()) {
+        barThreeGrabbed = true;
         m_climber.MediumTraverseGrab();
         // delay to allow pneumatics to move
         Timer.delay(.125);
-        // try {
-        //   Thread.sleep(125);
-        // } catch (InterruptedException e) {
-        //   e.printStackTrace();
-        // }
         m_climber.Stop(Arm.Both);
         m_climber.EngageBrake();
       } else {
@@ -140,6 +127,7 @@ public class AutoClimb extends CommandBase {
   }
 
   public void climbFourthBar(){
-
+    m_climber.HighRelease();
+    m_climber.Start(-1, Arm.Both);
   }
 }

@@ -70,7 +70,7 @@ public class AimAndShoot extends CommandBase {
         }
 
         if (tx > minDegreeOffset || tx < -minDegreeOffset) {
-            m_drivetrain.tankDrive(turnSpeed, 0);
+            m_drivetrain.tankDrive(-turnSpeed, 0);
             return;
         }
 
@@ -99,7 +99,7 @@ public class AimAndShoot extends CommandBase {
         double distanceFromLimelightToGoalInches = (goalHeightInches - limelightHeightInches) / Math.tan(angleToGoalRadians);
  
         // rpm = 3000rpm at 9 feet. Add 93.75 for ever foot beyond 9 feet
-        double rpm = ((distanceFromLimelightToGoalInches - 108) / 12 * 93.75) + 2600;
+        double rpm = ((distanceFromLimelightToGoalInches - 108) / 12 * 93.75) + 2800;
 
         SmartDashboard.putNumber("Caluclated Distance", distanceFromLimelightToGoalInches);
         SmartDashboard.putNumber("Calculated RPM", rpm);
@@ -113,7 +113,7 @@ public class AimAndShoot extends CommandBase {
         m_drivetrain.stop();;
         m_shooter.Stop();
         m_indexer.Stop();
-        //limelight.getEntry("ledMode").setNumber(1);
+        limelight.getEntry("ledMode").setNumber(1);
     }
 
     // Returns true when the command should end.

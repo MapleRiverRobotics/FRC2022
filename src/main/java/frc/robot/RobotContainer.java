@@ -14,37 +14,13 @@ package frc.robot;
 
 import frc.robot.Constants.IntakeConstants;
 import frc.robot.Constants.OIConstants;
-import frc.robot.Constants.TrajectoryConstants;
 import frc.robot.Constants.ClimberConstants.Arm;
 import frc.robot.commands.*;
 import frc.robot.subsystems.*;
 import edu.wpi.first.wpilibj.smartdashboard.SendableChooser;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
-import edu.wpi.first.math.trajectory.TrajectoryConfig;
 import edu.wpi.first.wpilibj2.command.Command;
-import edu.wpi.first.wpilibj2.command.InstantCommand;
-import edu.wpi.first.wpilibj2.command.ParallelCommandGroup;
-import edu.wpi.first.wpilibj2.command.ParallelDeadlineGroup;
-import edu.wpi.first.wpilibj2.command.RamseteCommand;
-import edu.wpi.first.wpilibj2.command.SequentialCommandGroup;
 
-import java.io.IOException;
-import java.nio.file.Path;
-import java.util.List;
-
-import edu.wpi.first.math.controller.PIDController;
-import edu.wpi.first.math.controller.RamseteController;
-import edu.wpi.first.math.controller.SimpleMotorFeedforward;
-import edu.wpi.first.math.geometry.Pose2d;
-import edu.wpi.first.math.geometry.Rotation2d;
-import edu.wpi.first.math.geometry.Translation2d;
-import edu.wpi.first.math.kinematics.DifferentialDriveKinematics;
-import edu.wpi.first.math.trajectory.Trajectory;
-import edu.wpi.first.math.trajectory.TrajectoryGenerator;
-import edu.wpi.first.math.trajectory.TrajectoryUtil;
-import edu.wpi.first.math.trajectory.constraint.DifferentialDriveVoltageConstraint;
-import edu.wpi.first.wpilibj.DriverStation;
-import edu.wpi.first.wpilibj.Filesystem;
 import edu.wpi.first.wpilibj.Joystick;
 import edu.wpi.first.wpilibj.XboxController;
 import edu.wpi.first.wpilibj2.command.button.JoystickButton;
@@ -72,17 +48,6 @@ public class RobotContainer {
   private final Intake m_intake = new Intake();
   private final Indexer m_indexer = new Indexer();
 
-  // A simple auto routine that drives forward a specified distance, and then
-  // stops.
-  private final Command m_autoDriveForward = new AutonomousDriveCommand(m_drivetrain, 1);
-  private final Command m_autoDriveReverse = new AutonomousDriveCommand(m_drivetrain, -1);
-  private final Command m_autoShootAndBackup = new SequentialCommandGroup(
-      new Shoot(m_shooter, m_indexer, 1500),
-      new AutonomousDriveCommand(m_drivetrain, -1));
-
-  public static final DifferentialDriveKinematics m_driveKinematics = new DifferentialDriveKinematics(
-      TrajectoryConstants.kTrackWidthMeters);
-
   // A chooser for autonomous commands
   SendableChooser<Command> m_chooser = new SendableChooser<>();
 
@@ -100,9 +65,9 @@ public class RobotContainer {
 
     // SmartDashboard Buttons
     // Add commands to the autonomous command chooser
-    m_chooser.setDefaultOption("Auto Drive Forward", m_autoDriveForward);
-    m_chooser.addOption("Auto Drive Reverse", m_autoDriveReverse);
-    m_chooser.addOption("Shoot and then leave tarmac", m_autoShootAndBackup);
+    m_chooser.setDefaultOption("Auto Two Ball Lower Hub", new AutoTwoBallLowerHub(m_drivetrain, m_shooter, m_indexer, m_intake));
+    m_chooser.addOption("Auto Two Ball Upper Hub", new AutoTwoBallUpperHub(m_drivetrain, m_shooter, m_indexer, m_intake));
+    m_chooser.addOption("Auto Four Ball", new AutoFourBallUpperHub(m_drivetrain, m_shooter, m_indexer, m_intake));
 
     // Put the chooser on the dashboard
     SmartDashboard.putData(m_chooser);
@@ -200,61 +165,14 @@ public class RobotContainer {
     return driveJoystick;
   }
 
-  // /**
-  // * Use this to pass the autonomous command to the main {@link Robot} class.
-  // *
-  // * @return the command to run in autonomous
-  // */
-  // public Command getAutonomousCommand() {
-  // // The selected command will be run in autonomous
-  // return m_chooser.getSelected();
-  // }
-
-  private Trajectory trajectory = new Trajectory();
-
-  public void loadTrajectories() {
-    // String trajectoryJSON = "paths/DriveToSideCargo.wpilib.json";
-
-    // try {
-    // Path trajectoryPath =
-    // Filesystem.getDeployDirectory().toPath().resolve(trajectoryJSON);
-    // trajectory = TrajectoryUtil.fromPathweaverJson(trajectoryPath);
-    // } catch (IOException ex) {
-    // DriverStation.reportError("Unable to open trajectory: " + trajectoryJSON,
-    // ex.getStackTrace());
-    // }
-  }
-
-
-  public Command getAutonomousCommand2() {
-    return new DriveRotateInPlace(m_drivetrain, 180);
-  }
-
+  /**
+  * Use this to pass the autonomous command to the main {@link Robot} class.
+  *
+  * @return the command to run in autonomous
+  */
   public Command getAutonomousCommand() {
-    Trajectory t1 = TrajectoryHelper.loadTrajectoryFromFile("DriveToSideCargo");
-    Trajectory t2 = TrajectoryHelper.loadTrajectoryFromFile("reverse");
-    Trajectory t3 = TrajectoryHelper.loadTrajectoryFromFile("TurnAroundBySideCargo");
-
-    Command autoCommand = new SequentialCommandGroup(
-        new InstantCommand(() -> {
-          m_drivetrain.resetOdometry(t1.getInitialPose());
-        }),
-        // new InstantCommand(() -> {
-        //   m_intake.up();
-        // }),
-        new IntakeLift(m_intake, 0).withTimeout(2),
-        new ParallelDeadlineGroup(
-//          TrajectoryHelper.createCommandForTrajectory(t1, false, m_drivetrain).withTimeout(50).withName("Forward"),
-          TrajectoryHelper.getDriveStraightCommand(m_drivetrain, 36).withTimeout(5).withName("Forward"),
-          new IntakeRun(m_intake, 1)
-        ),
-        TrajectoryHelper.getDriveStraightCommand(m_drivetrain, -36).withTimeout(5).withName("Reverse"),
-        new DriveRotateInPlace(m_drivetrain, 180).withTimeout(5),
-        new Shoot(m_shooter, m_indexer, 2000).withTimeout(5));
-
-    return autoCommand;
-    //trajectory = TrajectoryHelper.loadTrajectoryFromFile("DriveToSideCargo");
-    //return TrajectoryHelper.createCommandForTrajectory(trajectory, true, m_drivetrain);
+  // The selected command will be run in autonomous
+  return m_chooser.getSelected();
   }
 
 }

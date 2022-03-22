@@ -30,6 +30,9 @@ public class Rotate extends CommandBase {
   // Called every time the scheduler runs while the command is scheduled.
   @Override
   public void execute() {
+    m_climber.IsThirdBarLeftLimitSwitchPressed();
+    m_climber.IsThirdBarRightLimitSwitchPressed();
+    m_climber.IsSecondBarLeftLimitSwitchPressed();
     //m_climber.SetArmAngle(360 * m_direction, m_arm);
     m_climber.Start(m_direction, m_arm);
     // if(m_climber.firstBarRightLimitSwitch.get() == false && m_climber.firstBarLeftLimitSwitch.get() == false){

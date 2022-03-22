@@ -34,9 +34,6 @@ public class Release extends CommandBase {
     } else if (m_barNumber == 2) {
       m_climber.HighRelease();
     }
-
-    // this is just a test of a servo
-    m_climber.DisengageBrake();
   }
 
   // Called once the command ends or is interrupted.

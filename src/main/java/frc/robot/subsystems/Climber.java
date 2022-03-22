@@ -40,8 +40,8 @@ public class Climber extends SubsystemBase {
       ClimberConstants.MediumTraverseGrabId, ClimberConstants.MediumTraverseReleaseId);
   private final DoubleSolenoid highValve = new DoubleSolenoid(PneumaticsModuleType.CTREPCM, ClimberConstants.HighValveGrabId,
       ClimberConstants.HighValveReleaseId);
-  private final Servo brakeServoRight = new Servo(ClimberConstants.BreakServoOneId);
-  private final Servo brakeServoLeft = new Servo(ClimberConstants.BreakServoTwoId);
+  private final Servo brakeServoRight = new Servo(ClimberConstants.BrakeServoRightId);
+  private final Servo brakeServoLeft = new Servo(ClimberConstants.BrakeServoLeftId);
 
   private final DigitalInput firstBarRightLimitSwitch, secondBarRightLimitSwitch, thirdBarRightLimitSwitch,
       firstBarLeftLimitSwitch, secondBarLeftLimitSwitch, thirdBarLeftLimitSwitch;
@@ -113,13 +113,15 @@ public class Climber extends SubsystemBase {
     firstBarLeftLimitSwitch = new DigitalInput(ClimberConstants.firstBarLeftLimitSwitch);
     secondBarLeftLimitSwitch = new DigitalInput(ClimberConstants.secondBarLeftLimitSwitch);
     thirdBarLeftLimitSwitch = new DigitalInput(ClimberConstants.thirdBarLeftLimitSwitch);
+
+    //DisengageBrake();
   }
 
   public boolean IsBrakeEngaged() {
     double rightAngle = brakeServoRight.getAngle();
     double leftAngle = brakeServoLeft.getAngle();
     boolean isEngaged = false;
-    if (rightAngle < 160 || leftAngle > 20) {
+    if (rightAngle > 160 || leftAngle < 20) {
           isEngaged = true;
     }
 
@@ -127,14 +129,14 @@ public class Climber extends SubsystemBase {
     return isEngaged;
   }
 
-  public void EngageBrake() {
+  public void DisengageBrake() {
     brakeServoRight.setAngle(90);
     SmartDashboard.putNumber("Brake Right Servo Angle", brakeServoRight.getAngle());
     brakeServoLeft.setAngle(90);
     SmartDashboard.putNumber("Brake Left Servo Angle", brakeServoLeft.getAngle());
   }
 
-  public void DisengageBrake() {
+  public void EngageBrake() {
     brakeServoRight.setAngle(180);
     SmartDashboard.putNumber("Brake Right Servo Angle", brakeServoRight.getAngle());
     brakeServoLeft.setAngle(0);
@@ -224,7 +226,7 @@ public class Climber extends SubsystemBase {
   }
 
   public void Start(int direction, Arm arm) {
-    double speed = .5 * direction;
+    double speed = .6 * direction;
 
     // Safety mechanism to ensure we don't strip the brakes while going the wrong direction
     if (direction > 0 && IsBrakeEngaged()) {
@@ -266,21 +268,24 @@ public class Climber extends SubsystemBase {
 
   // Limit switch methods
   public boolean IsFirstBarRightLimitSwitchPressed() {
-    return firstBarRightLimitSwitch.get() == true;
+    return firstBarRightLimitSwitch.get() == false;
   }
   public boolean IsFirstBarLeftLimitSwitchPressed() {
-    return firstBarLeftLimitSwitch.get() == true;
+    return firstBarLeftLimitSwitch.get() == false;
   }
   public boolean IsSecondBarRightLimitSwitchPressed() {
-    return secondBarRightLimitSwitch.get() == true;
+    return secondBarRightLimitSwitch.get() == false;
   }
   public boolean IsSecondBarLeftLimitSwitchPressed() {
-    return secondBarLeftLimitSwitch.get() == true;
+    SmartDashboard.putBoolean("Second bar left limit switch", secondBarLeftLimitSwitch.get());
+    return secondBarLeftLimitSwitch.get() == false;
   }
   public boolean IsThirdBarRightLimitSwitchPressed() {
-    return thirdBarRightLimitSwitch.get() == true;
+    SmartDashboard.putBoolean("Third bar right limit switch", thirdBarRightLimitSwitch.get());
+    return thirdBarRightLimitSwitch.get() == false;
   }
   public boolean IsThirdBarLeftLimitSwitchPressed() {
-    return thirdBarLeftLimitSwitch.get() == true;
+    SmartDashboard.putBoolean("Third bar left limit switch", thirdBarLeftLimitSwitch.get());
+    return thirdBarLeftLimitSwitch.get() == false;
   }
 }

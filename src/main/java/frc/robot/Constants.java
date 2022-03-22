@@ -60,8 +60,8 @@ public final class Constants {
         public static final int firstBarLeftLimitSwitch = 5;
         public static final int secondBarLeftLimitSwitch = 4;
         public static final int thirdBarLeftLimitSwitch = 6;
-        public static final int BreakServoOneId = 0;
-        public static final int BreakServoTwoId = 1;
+        public static final int BrakeServoRightId = 0;
+        public static final int BrakeServoLeftId = 1;
 
         public enum Arm {
             Left,
