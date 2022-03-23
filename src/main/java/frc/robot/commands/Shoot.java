@@ -6,6 +6,7 @@ package frc.robot.commands;
 
 import edu.wpi.first.wpilibj.Timer;
 import edu.wpi.first.wpilibj2.command.CommandBase;
+import frc.robot.RobotContainer;
 import frc.robot.subsystems.Indexer;
 import frc.robot.subsystems.Shooter;
 
@@ -33,8 +34,9 @@ public class Shoot extends CommandBase {
   @Override
   public void execute() {
 
-    m_shooter.runShooterAtRpm(m_rpm);
-    if (m_shooter.isWheelUpToSpeed(m_rpm)) {
+    double calculatedRpm = m_rpm * RobotContainer.oi.getJoystickDriveThrottleSpeed();
+    m_shooter.runShooterAtRpm(calculatedRpm);
+    if (m_shooter.isWheelUpToSpeed(calculatedRpm)) {
         Timer.delay(0.125);
         m_indexer.Start(-1);
     }

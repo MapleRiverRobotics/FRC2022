@@ -26,7 +26,7 @@ public class Drive extends CommandBase {
     // Called every time the scheduler runs while the command is scheduled.
     @Override
     public void execute() {
-        double throttleSpeed = RobotContainer.oi.getJoystickDriveThrottleSpeed();
+        double throttleSpeed = 1.0; //RobotContainer.oi.getJoystickDriveThrottleSpeed();
         double forwardSpeed = RobotContainer.oi.getJoystickDriveForwardSpeed() * throttleSpeed;
         double rotation = RobotContainer.oi.getJoystickDriveRotation() * throttleSpeed;
 

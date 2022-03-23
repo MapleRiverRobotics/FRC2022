@@ -5,6 +5,7 @@ import edu.wpi.first.networktables.NetworkTableInstance;
 import edu.wpi.first.wpilibj.Timer;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.CommandBase;
+import frc.robot.Constants.ShooterConstants;
 import frc.robot.subsystems.Drivetrain;
 import frc.robot.subsystems.Indexer;
 import frc.robot.subsystems.Shooter;
@@ -99,7 +100,7 @@ public class AimAndShoot extends CommandBase {
         double distanceFromLimelightToGoalInches = (goalHeightInches - limelightHeightInches) / Math.tan(angleToGoalRadians);
  
         // rpm = 3000rpm at 9 feet. Add 93.75 for ever foot beyond 9 feet
-        double rpm = ((distanceFromLimelightToGoalInches - 108) / 12 * 93.75) + 2800;
+        double rpm = ((distanceFromLimelightToGoalInches - 108) / 12 * 93.75) + ShooterConstants.ShooterBaseRpm;
 
         SmartDashboard.putNumber("Caluclated Distance", distanceFromLimelightToGoalInches);
         SmartDashboard.putNumber("Calculated RPM", rpm);
