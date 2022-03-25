@@ -33,8 +33,8 @@ public class DriveRotateInPlace extends CommandBase {
     public void execute() {
         double currentHeading = m_drivetrain.getHeading();
         double speed = (m_targetHeading - currentHeading) * .015;
-        if (speed < .15) {
-            speed = .15;
+        if (speed < .18) {
+            speed = .18;
         } else if (speed > .35) {
             speed = .35;
         }

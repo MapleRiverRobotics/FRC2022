@@ -34,7 +34,10 @@ public class Shoot extends CommandBase {
   @Override
   public void execute() {
 
-    double calculatedRpm = m_rpm * RobotContainer.oi.getJoystickDriveThrottleSpeed();
+    double calculatedRpm = (m_rpm - 1500) / 100.0 * RobotContainer.oi.getJoystickDriveThrottleSpeed() * 100 + 1500;
+
+    //double calculatedRpm = m_rpm * RobotContainer.oi.getJoystickDriveThrottleSpeed();
+
     m_shooter.runShooterAtRpm(calculatedRpm);
     if (m_shooter.isWheelUpToSpeed(calculatedRpm)) {
         Timer.delay(0.125);

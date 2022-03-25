@@ -149,10 +149,20 @@ public class RobotContainer {
     // 2));
     // releaseButton.negate().and(grab3Button).whileActiveOnce(new Grab(m_climber,
     // 3));
-    releaseButton.negate().and(grab1Button).whileActiveContinuous(new AutoClimb(m_climber, 1));
-    releaseButton.negate().and(grab2Button).whileActiveContinuous(new AutoClimb(m_climber, 2));
-    releaseButton.negate().and(grab3Button).whileActiveContinuous(new AutoClimb(m_climber, 3));
-    releaseButton.negate().and(release3Buton).whileActiveContinuous(new AutoClimb(m_climber, 4));
+    // releaseButton.negate().and(grab1Button).whileActiveContinuous(new AutoClimb(m_climber, 1));
+    // releaseButton.negate().and(grab2Button).whileActiveContinuous(new AutoClimb(m_climber, 2));
+    // releaseButton.negate().and(grab3Button).whileActiveContinuous(new AutoClimb(m_climber, 3));
+    // releaseButton.negate().and(release3Buton).whileActiveContinuous(new AutoClimb(m_climber, 4));
+
+    // auto climb with driver joystick
+    final JoystickButton driverBarOne = new JoystickButton(driveJoystick, 5);
+    driverBarOne.whileHeld(new AutoClimb(m_climber, 1));
+    final JoystickButton driverBarTwo = new JoystickButton(driveJoystick, 6);
+    driverBarTwo.whileActiveContinuous(new AutoClimb(m_climber, 2));
+    final JoystickButton driverBarThree = new JoystickButton(driveJoystick, 3);
+    driverBarThree.whileActiveContinuous(new AutoClimb(m_climber, 3));
+    final JoystickButton driverBarFour = new JoystickButton(driveJoystick, 4);
+    driverBarFour.whileActiveContinuous(new AutoClimb(m_climber, 4));
 
     // Release
     releaseButton.and(grab1Button).whileActiveOnce(new Release(m_climber, 1));

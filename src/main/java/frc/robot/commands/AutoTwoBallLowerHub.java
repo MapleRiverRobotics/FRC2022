@@ -19,15 +19,15 @@ public class AutoTwoBallLowerHub  extends SequentialCommandGroup  {
             new InstantCommand(() -> {
                 drivetrain.resetOdometry(t1.getInitialPose());
               }),
-              new IntakeLift(intake, 0).withTimeout(1),
+              new IntakeLift(intake, 0).withTimeout(.7),
               new ParallelDeadlineGroup(
-                TrajectoryHelper.getDriveStraightCommand(drivetrain, 36).withTimeout(5).withName("Forward"),
+                TrajectoryHelper.getDriveStraightCommand(drivetrain, 40).withTimeout(3).withName("Forward"),
                 new IntakeRun(intake, 1)
               ),
-              TrajectoryHelper.getDriveStraightCommand(drivetrain, -36).withTimeout(5).withName("Reverse"),
-              new DriveRotateInPlace(drivetrain, 180).withTimeout(4).withName("Turn180"),
+              TrajectoryHelper.getDriveStraightCommand(drivetrain, -40).withTimeout(3).withName("Reverse"),
+              new DriveRotateInPlace(drivetrain, 180).withTimeout(3).withName("Turn180"),
               new Shoot(shooter, indexer, 1800).withTimeout(4),
-              TrajectoryHelper.getDriveStraightCommand(drivetrain, -56).withTimeout(5).withName("Reverse")
+              TrajectoryHelper.getDriveStraightCommand(drivetrain, -58).withTimeout(3).withName("Reverse")
         );
     }
 }
