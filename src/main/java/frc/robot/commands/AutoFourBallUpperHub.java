@@ -25,14 +25,14 @@ public class AutoFourBallUpperHub  extends SequentialCommandGroup  {
               new IntakeLift(intake, 0).withTimeout(.5),
               new ParallelDeadlineGroup(
                 TrajectoryHelper.createCommandForTrajectory(t1, true, drivetrain).withTimeout(5).withName("Forward"),
-                new IntakeRun(intake, 1)
+                new IntakeRun(intake, 1, .80)
               ),
               new DriveRotateInPlace(drivetrain, 180).withTimeout(4).withName("Turn180"),
               new Shoot(shooter, indexer, 2500).withTimeout(4),
               new DriveRotateInPlace(drivetrain, 180).withTimeout(4).withName("Turn180"),
               new ParallelCommandGroup(
                 TrajectoryHelper.createCommandForTrajectory(t2, true, drivetrain).withTimeout(5).withName("Forward"),
-                new IntakeRun(intake, 1).withTimeout(5)
+                new IntakeRun(intake, 1, .80).withTimeout(5)
               ),
 
               new DriveRotateInPlace(drivetrain, 180).withTimeout(4).withName("Turn180"),

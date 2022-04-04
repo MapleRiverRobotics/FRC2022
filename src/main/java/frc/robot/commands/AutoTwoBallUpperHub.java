@@ -22,7 +22,7 @@ public class AutoTwoBallUpperHub  extends SequentialCommandGroup  {
               new IntakeLift(intake, 0).withTimeout(.7),
               new ParallelDeadlineGroup(
                 TrajectoryHelper.getDriveStraightCommand(drivetrain, 40).withTimeout(3).withName("Forward"),
-                new IntakeRun(intake, 1)
+                new IntakeRun(intake, 1, 100)
               ),
               new DriveRotateInPlace(drivetrain, 180).withTimeout(3).withName("Turn180"),
               TrajectoryHelper.getDriveStraightCommand(drivetrain, -40).withTimeout(3).withName("Reverse"),

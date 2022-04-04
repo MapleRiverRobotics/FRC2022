@@ -20,7 +20,8 @@ import frc.robot.subsystems.*;
 import edu.wpi.first.wpilibj.smartdashboard.SendableChooser;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.Command;
-
+import edu.wpi.first.networktables.NetworkTable;
+import edu.wpi.first.networktables.NetworkTableInstance;
 import edu.wpi.first.wpilibj.Joystick;
 import edu.wpi.first.wpilibj.XboxController;
 import edu.wpi.first.wpilibj2.command.button.JoystickButton;
@@ -107,8 +108,10 @@ public class RobotContainer {
     Trigger intakeForward = new Trigger(() -> operatorJoystick.getPOV() > 315 ||
         (operatorJoystick.getPOV() >= 0 && operatorJoystick.getPOV() < 45));
     Trigger intakeReverse = new Trigger(() -> operatorJoystick.getPOV() > 135 && operatorJoystick.getPOV() < 215);
-    intakeForward.whileActiveContinuous(new IntakeRun(m_intake, -1));
-    intakeReverse.whileActiveContinuous(new IntakeRun(m_intake, 1));
+    intakeForward.whileActiveContinuous(new IntakeRun(m_intake, -1, .80));
+    intakeReverse.whileActiveContinuous(new IntakeRun(m_intake, 1, .80));
+    final JoystickButton intakePowerBoostButton = new JoystickButton(operatorJoystick, IntakeConstants.IntakePowerBoost);
+    intakePowerBoostButton.whileHeld(new IntakeRun(m_intake, 1, 100));
 
     final JoystickButton intakeUpButton = new JoystickButton(operatorJoystick, IntakeConstants.IntakeUpButton);
     intakeUpButton.whenPressed(new IntakeLift(m_intake, 1));
@@ -139,7 +142,7 @@ public class RobotContainer {
     final JoystickButton releaseButton = new JoystickButton(operatorJoystick, 9);
     final JoystickButton grab1Button = new JoystickButton(operatorJoystick, 3);
     final JoystickButton grab2Button = new JoystickButton(operatorJoystick, 4);
-    final JoystickButton grab3Button = new JoystickButton(operatorJoystick, 2);
+    //final JoystickButton grab3Button = new JoystickButton(operatorJoystick, 2);
     final JoystickButton release3Buton = new JoystickButton(operatorJoystick, 1);
 
     // Grab
@@ -167,7 +170,10 @@ public class RobotContainer {
     // Release
     releaseButton.and(grab1Button).whileActiveOnce(new Release(m_climber, 1));
     releaseButton.and(grab2Button).whileActiveOnce(new Release(m_climber, 2));
-    releaseButton.and(grab3Button).whileActiveOnce(new Release(m_climber, 3));
+   // releaseButton.and(grab3Button).whileActiveOnce(new Release(m_climber, 3));
+
+  //  NetworkTable limelight = NetworkTableInstance.getDefault().getTable("limelight");
+  //  limelight.getEntry("ledMode").setNumber(3);
 
   }
 

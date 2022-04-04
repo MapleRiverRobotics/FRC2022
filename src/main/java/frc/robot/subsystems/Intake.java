@@ -33,8 +33,8 @@ public class Intake extends SubsystemBase {
     // This method will be called once per scheduler run
   }
 
-  public void Start(int direction) {
-    m_intakeMotor.set(80 * direction);
+  public void Start(int direction, double speed) {
+    m_intakeMotor.set(speed * direction);
   }
 
   public void Stop() {

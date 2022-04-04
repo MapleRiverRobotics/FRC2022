@@ -51,7 +51,8 @@ public class AimAndShoot extends CommandBase {
     // Called every time the scheduler runs while the command is scheduled.
     @Override
     public void execute() {
-        SmartDashboard.putBoolean("AimAndShoot End Called with interrupted:", false);
+        //SmartDashboard.putBoolean("AimAndShoot End Called with interrupted:", false);
+        limelight.getEntry("ledMode").setNumber(3);
         tx = limelight.getEntry("tx").getDouble(0);
         ty = limelight.getEntry("ty").getDouble(0);
         tv = limelight.getEntry("tv").getDouble(0);
@@ -114,7 +115,7 @@ public class AimAndShoot extends CommandBase {
         m_drivetrain.stop();;
         m_shooter.Stop();
         m_indexer.Stop();
-        limelight.getEntry("ledMode").setNumber(1);
+        //limelight.getEntry("ledMode").setNumber(1);
     }
 
     // Returns true when the command should end.

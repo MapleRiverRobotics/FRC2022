@@ -36,7 +36,7 @@ public final class Constants {
 
     // Shooter constants
     public static final class ShooterConstants {
-        public static final int ShooterBaseRpm = 2800;
+        public static final int ShooterBaseRpm = 2700;
         public static final int ShooterMotorOneId = 6;
         public static final int ShooterMotorTwoId = 5;
     }
@@ -78,6 +78,7 @@ public final class Constants {
         public static final int IntakeUpValve = 1;
         public static final int IntakeUpButton = 4;
         public static final int IntakeDownButton = 1;
+        public static final int IntakePowerBoost = 2;
     }
 
     // Indexer constants

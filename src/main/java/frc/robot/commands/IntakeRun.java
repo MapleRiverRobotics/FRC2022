@@ -11,12 +11,14 @@ public class IntakeRun extends CommandBase {
 
   private final Intake m_intake;
   private final int m_direction;
+  private final double m_speed;
 
-  public IntakeRun(Intake intake, int direction) {
+  public IntakeRun(Intake intake, int direction, double speed) {
     addRequirements(intake);
     
     m_intake = intake;
     m_direction = direction;
+    m_speed = speed;
   }
 
   // Called when the command is initially scheduled.
@@ -27,7 +29,7 @@ public class IntakeRun extends CommandBase {
   // Called every time the scheduler runs while the command is scheduled.
   @Override
   public void execute() {
-    m_intake.Start(m_direction);
+    m_intake.Start(m_direction, m_speed);
   }
 
   // Called once the command ends or is interrupted.
