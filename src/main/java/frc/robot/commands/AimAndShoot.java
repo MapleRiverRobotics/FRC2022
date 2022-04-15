@@ -72,7 +72,8 @@ public class AimAndShoot extends CommandBase {
         }
 
         if (tx > minDegreeOffset || tx < -minDegreeOffset) {
-            m_drivetrain.tankDrive(-turnSpeed, 0);
+            //m_drivetrain.tankDrive(-turnSpeed, 0);
+            m_drivetrain.tankDrive(-turnSpeed, turnSpeed);
             return;
         }
 
