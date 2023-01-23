@@ -96,7 +96,7 @@ public class Drivetrain extends SubsystemBase {
         m_rightEncoder.setVelocityConversionFactor(TrajectoryConstants.kEncoderDistancePerPulse / 60);
 
         resetEncoders();
-        m_odometry = new DifferentialDriveOdometry(m_gyro.getRotation2d());
+        m_odometry = new DifferentialDriveOdometry(m_gyro.getRotation2d(), m_leftEncoder.getPosition(), m_rightEncoder.getPosition());
 
         // ensure the CAN messages are recieved by controllers prior to burning them 
         Timer.delay(.2);
@@ -168,7 +168,7 @@ public class Drivetrain extends SubsystemBase {
    */
   public void resetOdometry(Pose2d pose) {
     resetEncoders();
-    m_odometry.resetPosition(pose, m_gyro.getRotation2d());
+    m_odometry.resetPosition(m_gyro.getRotation2d(), m_leftEncoder.getPosition(), m_rightEncoder.getPosition(), pose);
   }
 
   public void resetHeading() {

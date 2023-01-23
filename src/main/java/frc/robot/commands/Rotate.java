@@ -34,7 +34,7 @@ public class Rotate extends CommandBase {
     m_climber.IsThirdBarRightLimitSwitchPressed();
     m_climber.IsSecondBarLeftLimitSwitchPressed();
     //m_climber.SetArmAngle(360 * m_direction, m_arm);
-    m_climber.Start(m_direction, m_arm);
+    m_climber.Start(m_direction, m_arm, 0.6);
     // if(m_climber.firstBarRightLimitSwitch.get() == false && m_climber.firstBarLeftLimitSwitch.get() == false){
     //   m_climber.MediumTraverseGrab();
     // }

@@ -66,8 +66,8 @@ public class RobotContainer {
 
     // SmartDashboard Buttons
     // Add commands to the autonomous command chooser
-    m_chooser.setDefaultOption("Auto Two Ball Lower Hub", new AutoTwoBallLowerHub(m_drivetrain, m_shooter, m_indexer, m_intake));
-    m_chooser.addOption("Auto Two Ball Upper Hub", new AutoTwoBallUpperHub(m_drivetrain, m_shooter, m_indexer, m_intake));
+    m_chooser.setDefaultOption("Auto Two Ball Upper Hub", new AutoTwoBallUpperHub(m_drivetrain, m_shooter, m_indexer, m_intake));
+    m_chooser.addOption("Auto Two Ball Lower Hub", new AutoTwoBallLowerHub(m_drivetrain, m_shooter, m_indexer, m_intake));
     m_chooser.addOption("Auto Four Ball", new AutoFourBallUpperHub(m_drivetrain, m_shooter, m_indexer, m_intake));
 
     // Put the chooser on the dashboard
@@ -96,10 +96,10 @@ public class RobotContainer {
     // Create Shooter buttons
     final JoystickButton shooterShootButtonOne = new JoystickButton(driveJoystick, 1);
     shooterShootButtonOne.whileHeld(new Shoot(m_shooter, m_indexer, 4000));
-    final JoystickButton shooterShootButtonTwo = new JoystickButton(driveJoystick, 12);
-    shooterShootButtonTwo.whileActiveContinuous(new Shoot(m_shooter, m_indexer, 2000));
-    final JoystickButton shooterShootButtonThree = new JoystickButton(driveJoystick, 11);
-    shooterShootButtonThree.whileActiveContinuous(new Shoot(m_shooter, m_indexer, 2500));
+    // final JoystickButton shooterShootButtonTwo = new JoystickButton(driveJoystick, 12);
+    // shooterShootButtonTwo.whileActiveContinuous(new Shoot(m_shooter, m_indexer, 2000));
+    // final JoystickButton shooterShootButtonThree = new JoystickButton(driveJoystick, 11);
+    // shooterShootButtonThree.whileActiveContinuous(new Shoot(m_shooter, m_indexer, 2500));
 
     final JoystickButton shooterAimAndShoot = new JoystickButton(driveJoystick, 2);
     shooterAimAndShoot.whileActiveContinuous(new AimAndShoot(m_shooter, m_drivetrain, m_indexer));
@@ -166,6 +166,34 @@ public class RobotContainer {
     driverBarThree.whileActiveContinuous(new AutoClimb(m_climber, 3));
     final JoystickButton driverBarFour = new JoystickButton(driveJoystick, 4);
     driverBarFour.whileActiveContinuous(new AutoClimb(m_climber, 4));
+
+
+    //Manual Lift Driver joystick
+    //Grab
+    final JoystickButton grabDrive1Button = new JoystickButton(driveJoystick, 11);
+    grabDrive1Button.whenPressed(new Grab(m_climber, 1));
+    final JoystickButton grabDrive2Button = new JoystickButton(driveJoystick, 9);
+    grabDrive2Button.whenPressed(new Grab(m_climber, 2));
+    final JoystickButton grabDrive3Buton = new JoystickButton(driveJoystick, 7);
+    grabDrive3Buton.whenPressed(new Grab(m_climber, 3));
+
+    //Release
+    final JoystickButton releaseDrive1Button = new JoystickButton(driveJoystick, 12);
+    releaseDrive1Button.whenPressed(new Release(m_climber, 1));
+    final JoystickButton releaseDrive2Button = new JoystickButton(driveJoystick, 10);
+    releaseDrive2Button.whenPressed(new Release(m_climber, 2));
+    final JoystickButton releaseDrive3Buton = new JoystickButton(driveJoystick, 8);
+    releaseDrive3Buton.whenPressed(new Release(m_climber, 3));
+
+    //Rotate
+    Trigger driveLiftForward = new Trigger(() -> driveJoystick.getPOV() > 315 ||
+    (driveJoystick.getPOV() >= 0 && driveJoystick.getPOV() < 45));
+    Trigger driveLiftReverse = new Trigger(() -> driveJoystick.getPOV() > 135 && operatorJoystick.getPOV() < 215);
+    driveLiftForward.whileActiveContinuous(new Rotate(m_climber, Arm.Both, -1));
+    driveLiftReverse.whileActiveContinuous(new Rotate(m_climber, Arm.Both, 1));
+
+    // final JoystickButton driverSwitchStatus = new JoystickButton(driveJoystick, 7);
+    // driverSwitchStatus.whileActiveContinuous(new AutoClimb(m_climber, 5));
 
     // Release
     releaseButton.and(grab1Button).whileActiveOnce(new Release(m_climber, 1));

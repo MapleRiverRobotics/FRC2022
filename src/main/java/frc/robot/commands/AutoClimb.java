@@ -47,8 +47,9 @@ public class AutoClimb extends CommandBase {
       climbThirdBar();
     } else if (m_barNumber == 4){
       climbFourthBar();
-    }
-  }
+    } else if (m_barNumber == 5){
+      displayswitchStatus();
+    }  }
 
   // Called once the command ends or is interrupted.
   @Override
@@ -72,7 +73,7 @@ public class AutoClimb extends CommandBase {
         Timer.delay(.125);
         m_climber.Stop(Arm.Both);
       } else {
-        m_climber.Start(-1, Arm.Both);
+        m_climber.Start(-1, Arm.Both, .9);
       }
     }
   }
@@ -87,7 +88,7 @@ public class AutoClimb extends CommandBase {
         barTwoGrabbed = true;
         m_climber.Stop(Arm.Both);
       } else {
-        m_climber.Start(1, Arm.Both);
+        m_climber.Start(1, Arm.Both, 0.85);
       }
     }
   }
@@ -100,7 +101,7 @@ public class AutoClimb extends CommandBase {
 
     // Release first bar by roatating arms against it to take pressure off of pneumatic cylinder rods
     if (barOneGrabbed == true) {
-      if (m_climber.IsFirstBarLeftLimitSwitchPressed() || m_climber.IsFirstBarRightLimitSwitchPressed()) {
+      if (m_climber.IsFirstBarLeftLimitSwitchPressed() && m_climber.IsFirstBarRightLimitSwitchPressed()) {
         m_climber.MediumTraverseRelease();
         barOneGrabbed = false;
         // delay to allow pneumatics to move
@@ -109,7 +110,7 @@ public class AutoClimb extends CommandBase {
         // delay to allow pneumatics to move
         Timer.delay(.125);
       } else {
-        m_climber.Start(-1, Arm.Both);
+        m_climber.Start(-1, Arm.Both, 0.6);
       }
       // Swing to third bar
     } else {
@@ -117,17 +118,28 @@ public class AutoClimb extends CommandBase {
         barThreeGrabbed = true;
         m_climber.MediumTraverseGrab();
         // delay to allow pneumatics to move
-        Timer.delay(.125);
+        Timer.delay(.25);
         m_climber.Stop(Arm.Both);
         m_climber.EngageBrake();
       } else {
-        m_climber.Start(1, Arm.Both);
+        m_climber.Start(1, Arm.Both, 0.6);
       }
     }
   }
 
   public void climbFourthBar(){
     m_climber.HighRelease();
-    m_climber.Start(-1, Arm.Both);
+    m_climber.Start(-1, Arm.Both, 0.8);
+  }
+
+  public void displayswitchStatus() {
+    m_climber.IsFirstBarLeftLimitSwitchPressed();
+    m_climber.IsFirstBarRightLimitSwitchPressed();
+
+    m_climber.IsSecondBarLeftLimitSwitchPressed();
+    m_climber.IsSecondBarRightLimitSwitchPressed();
+
+    m_climber.IsThirdBarLeftLimitSwitchPressed();
+    m_climber.IsThirdBarRightLimitSwitchPressed();
   }
 }

@@ -99,13 +99,13 @@ public class Climber extends SubsystemBase {
     PidControllerRight.setOutputRange(kMinOutput, kMaxOutput);
 
     // display PID coefficients on SmartDashboard
-    SmartDashboard.putNumber("P Gain", kP);
-    SmartDashboard.putNumber("I Gain", kI);
-    SmartDashboard.putNumber("D Gain", kD);
-    SmartDashboard.putNumber("I Zone", kIz);
-    SmartDashboard.putNumber("Feed Forward", kFF);
-    SmartDashboard.putNumber("Max Output", kMaxOutput);
-    SmartDashboard.putNumber("Min Output", kMinOutput);
+    // SmartDashboard.putNumber("P Gain", kP);
+    // SmartDashboard.putNumber("I Gain", kI);
+    // SmartDashboard.putNumber("D Gain", kD);
+    // SmartDashboard.putNumber("I Zone", kIz);
+    // SmartDashboard.putNumber("Feed Forward", kFF);
+    // SmartDashboard.putNumber("Max Output", kMaxOutput);
+    // SmartDashboard.putNumber("Min Output", kMinOutput);
 
     firstBarRightLimitSwitch = new DigitalInput(ClimberConstants.firstBarRightLimitSwitch);
     secondBarRightLimitSwitch = new DigitalInput(ClimberConstants.secondBarRightLimitSwitch);
@@ -225,8 +225,9 @@ public class Climber extends SubsystemBase {
     SmartDashboard.putNumber("ProcessVariable", m_encoderLeft.getPosition());
   }
 
-  public void Start(int direction, Arm arm) {
-    double speed = .6 * direction;
+  public void Start(int direction, Arm arm, double inputSpeed) {
+    //double speed = .8 * direction;
+    double speed = inputSpeed * direction;
 
     // Safety mechanism to ensure we don't strip the brakes while going the wrong direction
     if (direction > 0 && IsBrakeEngaged()) {
@@ -268,24 +269,33 @@ public class Climber extends SubsystemBase {
 
   // Limit switch methods
   public boolean IsFirstBarRightLimitSwitchPressed() {
-    return firstBarRightLimitSwitch.get() == false;
+    boolean result = firstBarRightLimitSwitch.get() == false;
+    SmartDashboard.putBoolean("First Bar Right: ", result);
+    return result;
   }
   public boolean IsFirstBarLeftLimitSwitchPressed() {
-    return firstBarLeftLimitSwitch.get() == false;
+    boolean result = firstBarLeftLimitSwitch.get() == false;
+    SmartDashboard.putBoolean("First Bar Left: ", result);
+    return result;
   }
   public boolean IsSecondBarRightLimitSwitchPressed() {
-    return secondBarRightLimitSwitch.get() == false;
+    boolean result =  secondBarRightLimitSwitch.get() == false;
+    SmartDashboard.putBoolean("Second Bar Right: ", result);
+    return result;
   }
   public boolean IsSecondBarLeftLimitSwitchPressed() {
-    SmartDashboard.putBoolean("Second bar left limit switch", secondBarLeftLimitSwitch.get());
-    return secondBarLeftLimitSwitch.get() == false;
+    boolean result =  secondBarLeftLimitSwitch.get() == false;
+    SmartDashboard.putBoolean("Second Bar Left: ", result);
+    return result;
   }
   public boolean IsThirdBarRightLimitSwitchPressed() {
-    SmartDashboard.putBoolean("Third bar right limit switch", thirdBarRightLimitSwitch.get());
-    return thirdBarRightLimitSwitch.get() == false;
+    boolean result =  thirdBarRightLimitSwitch.get() == false;
+    SmartDashboard.putBoolean("Third Bar Right: ", result);
+    return result;
   }
   public boolean IsThirdBarLeftLimitSwitchPressed() {
-    SmartDashboard.putBoolean("Third bar left limit switch", thirdBarLeftLimitSwitch.get());
-    return thirdBarLeftLimitSwitch.get() == false;
+    boolean result =  thirdBarLeftLimitSwitch.get() == false;
+    SmartDashboard.putBoolean("Third Bar Left: ", result);
+    return result;
   }
 }
