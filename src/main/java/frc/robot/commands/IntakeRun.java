@@ -4,10 +4,10 @@
 
 package frc.robot.commands;
 
-import edu.wpi.first.wpilibj2.command.CommandBase;
+import edu.wpi.first.wpilibj2.command.Command;
 import frc.robot.subsystems.Intake;
 
-public class IntakeRun extends CommandBase {
+public class IntakeRun extends Command {
 
   private final Intake m_intake;
   private final int m_direction;
@@ -29,7 +29,7 @@ public class IntakeRun extends CommandBase {
   // Called every time the scheduler runs while the command is scheduled.
   @Override
   public void execute() {
-    m_intake.Start(m_direction, m_speed);
+    m_intake.Start(m_direction, m_speed*.25);
   }
 
   // Called once the command ends or is interrupted.

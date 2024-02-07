@@ -4,10 +4,10 @@
 
 package frc.robot.commands;
 
-import edu.wpi.first.wpilibj2.command.CommandBase;
+import edu.wpi.first.wpilibj2.command.Command;
 import frc.robot.subsystems.Climber;
 
-public class Release extends CommandBase {
+public class Release extends Command {
   /** Creates a new ShooterShoot. */
 
   private final Climber m_climber;

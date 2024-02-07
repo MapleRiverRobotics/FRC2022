@@ -120,7 +120,7 @@ public class OI {
 
     public double getJoystickDriveRotation() {
         if (joystickDrive != null) {
-            return joystickDrive.getZ() * 0.9;
+            return joystickDrive.getZ() * -0.9;
         }
         // if the drive joystick is not plugged in, use the operator joystick (gamepad)
         // to drive

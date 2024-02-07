@@ -95,34 +95,42 @@ public class RobotContainer {
   private void configureButtonBindings() {
     // Create Shooter buttons
     final JoystickButton shooterShootButtonOne = new JoystickButton(driveJoystick, 1);
-    shooterShootButtonOne.whileHeld(new Shoot(m_shooter, m_indexer, 4000));
+    shooterShootButtonOne.whileTrue(new Shoot(m_shooter, m_indexer, 4000));
     // final JoystickButton shooterShootButtonTwo = new JoystickButton(driveJoystick, 12);
     // shooterShootButtonTwo.whileActiveContinuous(new Shoot(m_shooter, m_indexer, 2000));
     // final JoystickButton shooterShootButtonThree = new JoystickButton(driveJoystick, 11);
     // shooterShootButtonThree.whileActiveContinuous(new Shoot(m_shooter, m_indexer, 2500));
 
     final JoystickButton shooterAimAndShoot = new JoystickButton(driveJoystick, 2);
-    shooterAimAndShoot.whileActiveContinuous(new AimAndShoot(m_shooter, m_drivetrain, m_indexer));
+    shooterAimAndShoot.whileTrue(new AimAndShoot(m_shooter, m_drivetrain, m_indexer));
 
     // Intake Triggers
     Trigger intakeForward = new Trigger(() -> operatorJoystick.getPOV() > 315 ||
         (operatorJoystick.getPOV() >= 0 && operatorJoystick.getPOV() < 45));
+
+
     Trigger intakeReverse = new Trigger(() -> operatorJoystick.getPOV() > 135 && operatorJoystick.getPOV() < 215);
-    intakeForward.whileActiveContinuous(new IntakeRun(m_intake, -1, .80));
-    intakeReverse.whileActiveContinuous(new IntakeRun(m_intake, 1, .80));
+
+    
+    intakeForward.whileTrue(new IntakeRun(m_intake, -1, .80));
+
+
+    intakeReverse.whileTrue(new IntakeRun(m_intake, 1, .80));
+
+
     final JoystickButton intakePowerBoostButton = new JoystickButton(operatorJoystick, IntakeConstants.IntakePowerBoost);
-    intakePowerBoostButton.whileHeld(new IntakeRun(m_intake, 1, 100));
+    intakePowerBoostButton.whileTrue(new IntakeRun(m_intake, 1, 100));
 
     final JoystickButton intakeUpButton = new JoystickButton(operatorJoystick, IntakeConstants.IntakeUpButton);
-    intakeUpButton.whenPressed(new IntakeLift(m_intake, 1));
+    intakeUpButton.onTrue(new IntakeLift(m_intake, 1));
     final JoystickButton intakeDownButton = new JoystickButton(operatorJoystick, IntakeConstants.IntakeDownButton);
-    intakeDownButton.whenPressed(new IntakeLift(m_intake, 0));
+    intakeDownButton.onTrue(new IntakeLift(m_intake, 0));
 
     // Indexer Triggers
     Trigger indexerForward = new Trigger(() -> operatorJoystick.getPOV() >= 45 && operatorJoystick.getPOV() < 135);
     Trigger indexerReverse = new Trigger(() -> operatorJoystick.getPOV() > 225 && operatorJoystick.getPOV() < 315);
-    indexerForward.whileActiveContinuous(new IndexRun(m_indexer, 1));
-    indexerReverse.whileActiveContinuous(new IndexRun(m_indexer, -1));
+    indexerForward.whileTrue(new IndexRun(m_indexer, 1));
+    indexerReverse.whileTrue(new IndexRun(m_indexer, -1));
 
     // Climber Rotation Triggers
     Trigger leftTrigger = new Trigger(() -> operatorJoystick.getLeftTriggerAxis() > 0);
@@ -130,13 +138,13 @@ public class RobotContainer {
     Trigger leftBumper = new Trigger(() -> operatorJoystick.getLeftBumper());
     Trigger rightBumper = new Trigger(() -> operatorJoystick.getRightBumper());
 
-    leftTrigger.and(rightTrigger).whileActiveContinuous(new Rotate(m_climber, Arm.Both, 1));
-    leftTrigger.negate().and(rightTrigger).whileActiveContinuous(new Rotate(m_climber, Arm.Right, 1));
-    rightTrigger.negate().and(leftTrigger).whileActiveContinuous(new Rotate(m_climber, Arm.Left, 1));
+    leftTrigger.and(rightTrigger).whileTrue(new Rotate(m_climber, Arm.Both, 1));
+    leftTrigger.negate().and(rightTrigger).whileTrue(new Rotate(m_climber, Arm.Right, 1));
+    rightTrigger.negate().and(leftTrigger).whileTrue(new Rotate(m_climber, Arm.Left, 1));
 
-    leftBumper.and(rightBumper).whileActiveContinuous(new Rotate(m_climber, Arm.Both, -1));
-    leftBumper.negate().and(rightBumper).whileActiveContinuous(new Rotate(m_climber, Arm.Right, -1));
-    rightBumper.negate().and(leftBumper).whileActiveContinuous(new Rotate(m_climber, Arm.Left, -1));
+    leftBumper.and(rightBumper).whileTrue(new Rotate(m_climber, Arm.Both, -1));
+    leftBumper.negate().and(rightBumper).whileTrue(new Rotate(m_climber, Arm.Right, -1));
+    rightBumper.negate().and(leftBumper).whileTrue(new Rotate(m_climber, Arm.Left, -1));
 
     // Climber Pneumatic Buttons
     final JoystickButton releaseButton = new JoystickButton(operatorJoystick, 9);
@@ -159,45 +167,45 @@ public class RobotContainer {
 
     // auto climb with driver joystick
     final JoystickButton driverBarOne = new JoystickButton(driveJoystick, 5);
-    driverBarOne.whileHeld(new AutoClimb(m_climber, 1));
+    driverBarOne.whileTrue(new AutoClimb(m_climber, 1));
     final JoystickButton driverBarTwo = new JoystickButton(driveJoystick, 6);
-    driverBarTwo.whileActiveContinuous(new AutoClimb(m_climber, 2));
+    driverBarTwo.whileTrue(new AutoClimb(m_climber, 2));
     final JoystickButton driverBarThree = new JoystickButton(driveJoystick, 3);
-    driverBarThree.whileActiveContinuous(new AutoClimb(m_climber, 3));
+    driverBarThree.whileTrue(new AutoClimb(m_climber, 3));
     final JoystickButton driverBarFour = new JoystickButton(driveJoystick, 4);
-    driverBarFour.whileActiveContinuous(new AutoClimb(m_climber, 4));
+    driverBarFour.whileTrue(new AutoClimb(m_climber, 4));
 
 
     //Manual Lift Driver joystick
     //Grab
     final JoystickButton grabDrive1Button = new JoystickButton(driveJoystick, 11);
-    grabDrive1Button.whenPressed(new Grab(m_climber, 1));
+    grabDrive1Button.onTrue(new Grab(m_climber, 1));
     final JoystickButton grabDrive2Button = new JoystickButton(driveJoystick, 9);
-    grabDrive2Button.whenPressed(new Grab(m_climber, 2));
+    grabDrive2Button.onTrue(new Grab(m_climber, 2));
     final JoystickButton grabDrive3Buton = new JoystickButton(driveJoystick, 7);
-    grabDrive3Buton.whenPressed(new Grab(m_climber, 3));
+    grabDrive3Buton.onTrue(new Grab(m_climber, 3));
 
     //Release
     final JoystickButton releaseDrive1Button = new JoystickButton(driveJoystick, 12);
-    releaseDrive1Button.whenPressed(new Release(m_climber, 1));
+    releaseDrive1Button.onTrue(new Release(m_climber, 1));
     final JoystickButton releaseDrive2Button = new JoystickButton(driveJoystick, 10);
-    releaseDrive2Button.whenPressed(new Release(m_climber, 2));
+    releaseDrive2Button.onTrue(new Release(m_climber, 2));
     final JoystickButton releaseDrive3Buton = new JoystickButton(driveJoystick, 8);
-    releaseDrive3Buton.whenPressed(new Release(m_climber, 3));
+    releaseDrive3Buton.onTrue(new Release(m_climber, 3));
 
     //Rotate
     Trigger driveLiftForward = new Trigger(() -> driveJoystick.getPOV() > 315 ||
     (driveJoystick.getPOV() >= 0 && driveJoystick.getPOV() < 45));
     Trigger driveLiftReverse = new Trigger(() -> driveJoystick.getPOV() > 135 && operatorJoystick.getPOV() < 215);
-    driveLiftForward.whileActiveContinuous(new Rotate(m_climber, Arm.Both, -1));
-    driveLiftReverse.whileActiveContinuous(new Rotate(m_climber, Arm.Both, 1));
+    driveLiftForward.whileTrue(new Rotate(m_climber, Arm.Both, -1));
+    driveLiftReverse.whileTrue(new Rotate(m_climber, Arm.Both, 1));
 
     // final JoystickButton driverSwitchStatus = new JoystickButton(driveJoystick, 7);
     // driverSwitchStatus.whileActiveContinuous(new AutoClimb(m_climber, 5));
 
     // Release
-    releaseButton.and(grab1Button).whileActiveOnce(new Release(m_climber, 1));
-    releaseButton.and(grab2Button).whileActiveOnce(new Release(m_climber, 2));
+    releaseButton.and(grab1Button).whileTrue(new Release(m_climber, 1));
+    releaseButton.and(grab2Button).whileTrue(new Release(m_climber, 2));
    // releaseButton.and(grab3Button).whileActiveOnce(new Release(m_climber, 3));
 
   //  NetworkTable limelight = NetworkTableInstance.getDefault().getTable("limelight");

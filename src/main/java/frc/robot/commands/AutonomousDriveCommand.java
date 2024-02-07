@@ -1,8 +1,8 @@
 package frc.robot.commands;
-import edu.wpi.first.wpilibj2.command.CommandBase;
+import edu.wpi.first.wpilibj2.command.Command;
 import frc.robot.subsystems.Drivetrain;
 
-public class AutonomousDriveCommand extends CommandBase {
+public class AutonomousDriveCommand extends Command {
 
     private final Drivetrain m_drivetrain;
     private final int m_direction;

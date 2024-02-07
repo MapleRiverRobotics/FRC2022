@@ -1,13 +1,13 @@
 package frc.robot.commands;
 
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
-import edu.wpi.first.wpilibj2.command.CommandBase;
+import edu.wpi.first.wpilibj2.command.Command;
 import frc.robot.subsystems.Drivetrain;
 
 /**
  *
  */
-public class DriveRotateInPlace extends CommandBase {
+public class DriveRotateInPlace extends Command {
 
     private final Drivetrain m_drivetrain;
     private double m_targetHeading = 0;

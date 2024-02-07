@@ -8,11 +8,11 @@
 package frc.robot.commands;
 
 import edu.wpi.first.wpilibj.Timer;
-import edu.wpi.first.wpilibj2.command.CommandBase;
+import edu.wpi.first.wpilibj2.command.Command;
 import frc.robot.Constants.ClimberConstants.Arm;
 import frc.robot.subsystems.Climber;
 
-public class AutoClimb extends CommandBase {
+public class AutoClimb extends Command {
   private final Climber m_climber;
   private final int m_barNumber;
   public boolean barOneFinished;

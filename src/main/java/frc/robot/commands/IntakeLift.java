@@ -4,10 +4,10 @@
 
 package frc.robot.commands;
 
-import edu.wpi.first.wpilibj2.command.CommandBase;
+import edu.wpi.first.wpilibj2.command.Command;
 import frc.robot.subsystems.Intake;
 
-public class IntakeLift extends CommandBase {
+public class IntakeLift extends Command {
   /** Creates a new IntakeLift. */
   private final Intake m_intake;
   private final int m_direction;
