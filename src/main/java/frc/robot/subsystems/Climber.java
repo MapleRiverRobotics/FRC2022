@@ -6,9 +6,9 @@ package frc.robot.subsystems;
 
 import com.revrobotics.CANSparkMax;
 import com.revrobotics.RelativeEncoder;
-import com.revrobotics.SparkMaxPIDController;
+import com.revrobotics.SparkPIDController;
 import com.revrobotics.CANSparkBase.IdleMode;
-import com.revrobotics.CANSparkMaxLowLevel.MotorType;
+import com.revrobotics.CANSparkLowLevel.MotorType;
 import com.revrobotics.CANSparkBase;
 
 import edu.wpi.first.wpilibj.DoubleSolenoid;
@@ -26,8 +26,8 @@ public class Climber extends SubsystemBase {
 
   private final CANSparkMax m_motorLeft;
   private final CANSparkMax m_motorRight;
-  private final SparkMaxPIDController PidControllerLeft;
-  private final SparkMaxPIDController PidControllerRight;
+  private final SparkPIDController PidControllerLeft;
+  private final SparkPIDController PidControllerRight;
   private final RelativeEncoder m_encoderLeft;
   // private RelativeEncoder m_encoderRight;
   private double kP, kI, kD, kIz, kFF, kMaxOutput, kMinOutput;
