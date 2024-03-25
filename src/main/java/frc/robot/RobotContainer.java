@@ -212,11 +212,6 @@ public class RobotContainer {
 
   //  NetworkTable limelight = NetworkTableInstance.getDefault().getTable("limelight");
   //  limelight.getEntry("ledMode").setNumber(3);
-
-StartEndCommand
-    Command x = new RepeatCommand(getAutonomousCommand());
-
-
   }
 
   public Joystick getDriveJoystick() {
