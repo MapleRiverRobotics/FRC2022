@@ -20,6 +20,8 @@ import frc.robot.subsystems.*;
 import edu.wpi.first.wpilibj.smartdashboard.SendableChooser;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.Command;
+import edu.wpi.first.wpilibj2.command.RepeatCommand;
+import edu.wpi.first.wpilibj2.command.StartEndCommand;
 import edu.wpi.first.networktables.NetworkTable;
 import edu.wpi.first.networktables.NetworkTableInstance;
 import edu.wpi.first.wpilibj.Joystick;
@@ -210,6 +212,10 @@ public class RobotContainer {
 
   //  NetworkTable limelight = NetworkTableInstance.getDefault().getTable("limelight");
   //  limelight.getEntry("ledMode").setNumber(3);
+
+StartEndCommand
+    Command x = new RepeatCommand(getAutonomousCommand());
+
 
   }
 
